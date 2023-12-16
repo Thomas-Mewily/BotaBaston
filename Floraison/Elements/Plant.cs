@@ -61,7 +61,7 @@ public class Plant : Entite
         Behavior.Draw();
 
 
-        SpriteBatch.DrawCircle(Position, ScaledRadius, c);
+        // SpriteBatch.DrawCircle(Position, ScaledRadius, c);
 
         Vec2 drawPos = Position + offsetFlicker;
 
