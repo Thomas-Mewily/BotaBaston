@@ -6,6 +6,7 @@
 public struct GTime
 {
     public int Frames;
+    public int Hz_60 { get => Frames * 60 / TheGame.FrameRate; set => Frames = value * TheGame.FrameRate / 60; }
     public int MsInt => Frames * 1000 / TheGame.FrameRate;
 
     public float Seconds { get => Frames / TheGame.FrameRate; set => Frames = (int)(value * TheGame.FrameRate); }
@@ -32,8 +33,8 @@ public struct GTime
     public static bool operator ==(GTime a, GTime b) => a.Frames == b.Frames;
     public static bool operator !=(GTime a, GTime b) => !(a == b);
 
-    public static GTime operator -(GTime a, GTime b) => a.Frames - b.Frames;
-    public static GTime operator +(GTime a, GTime b) => a.Frames + b.Frames;
+    public static GTime operator -(GTime a, GTime b) => new GTime(a.Frames - b.Frames);
+    public static GTime operator +(GTime a, GTime b) => new GTime(a.Frames + b.Frames);
 
     public override bool Equals(object obj) => obj != null && obj is GTime t && t == this;
     public override int GetHashCode() => Seconds.GetHashCode();

@@ -52,7 +52,7 @@ public class TheGame : TimeRelated
 
     private void HandleDispawn()
     {
-        for (int i = _Entites.Count; i <= 0; i--)
+        for (int i = _Entites.Count-1; i >= 0; i--)
         {
             if (_Entites[i].SpawnState == Entite.SpawnStateEnum.DeleteMePlz)
             {
@@ -106,26 +106,6 @@ public override void Update()
         _Time.Frames++;
 
         Camera.Pop();
-
-        Camera.Push(Camera.Hud);
-        for (int i = (int)Controller.PlayerControlEnum.One; i <= (int)Controller.PlayerControlEnum.Four; i++)
-        {
-            int signX = (i - 1) / 2 % 2 == 0 ? -1 : 1;
-            int signY = (i - 1) % 2 == 0 ? -1 : 1;
-
-            float coefX = (signX + 1) / 2.0f;
-            float coefY = (signY + 1) / 2.0f;
-
-            if (Controller.From((Controller.PlayerControlEnum)i).IsConnected == false) { continue; }
-
-            var e = _Entites.First(t => t.PlayerControl == (Controller.PlayerControlEnum)i);
-            if(e == null) { continue; }
-
-            var c = e.Teams.GetColor();
-
-            //SpriteBatch.DrawText("P1", Camera.Peek().Rect.GetCoef(coefX, coefY), new Vec2(1 - coefX, 1 - coefY), c);
-        }
-        Camera.Pop();
     }
 
     public override void Draw()
@@ -136,6 +116,27 @@ public override void Update()
         {
             obj.Draw();
         }
+
+        Camera.Push(Camera.Hud);
+        for (int i = (int)Controller.PlayerControlEnum.One; i <= (int)Controller.PlayerControlEnum.Four; i++)
+        {
+            int signX = (i - 1) % 2 == 0 ? -1 : 1;
+            int signY = (i - 1) / 2 % 2 == 0 ? 1 : -1;
+
+            float coefX = (signX + 1) / 2.0f;
+            float coefY = (signY + 1) / 2.0f;
+
+            if (Controller.From((Controller.PlayerControlEnum)i).IsConnected == false) { continue; }
+
+            var e = _Entites.First(t => t.PlayerControl == (Controller.PlayerControlEnum)i);
+            if (e == null) { continue; }
+
+            var c = e.Teams.GetColor();
+
+            SpriteBatch.DrawText("P" + i +" "+e.Score.ToString("0.0"), Camera.Peek().Rect.GetCoef(coefX, coefY), new Vec2(coefX, coefY), c);
+            //SpriteBatch.DrawText("P" + i, Camera.Peek().Rect.GetCoef(coefX, coefY)*0.5f, new Vec2(1 - coefX, 1 - coefY), c);
+        }
+        Camera.Pop();
 
         Camera.Pop();
     }
