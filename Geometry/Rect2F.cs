@@ -34,6 +34,7 @@ public struct Rect2F
     public static Rect2F One  => new(0, 0, 1, 1);
 
     public bool IsCollidingWith(Rect2F f) => XMin > f.XMax && XMax < f.XMin && YMin > f.YMax && YMax < f.YMin;
+    public bool IsCollidingWith(Vec2 v) => XMin < v.X && XMax > v.X && YMin < v.Y && YMax > v.Y;
 
     public static bool operator ==(Rect2F a, Rect2F b) => a._Min == b._Min && a.Size == b.Size;
     public static bool operator !=(Rect2F a, Rect2F b) => !(a == b);

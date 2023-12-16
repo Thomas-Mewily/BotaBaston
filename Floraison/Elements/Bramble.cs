@@ -10,7 +10,7 @@ namespace Floraison;
 public class Bramble : Entite
 {
 
-    public float Strenth = 1f;
+    public float Strenth = 0.6f;
     public override void Update()
     {
         foreach(var e in AllOthersEntitiesAgainstMe().Inside(this)) 
@@ -18,6 +18,7 @@ public class Bramble : Entite
             Vec2 normal = e.Position - Position;
             normal.Normalize();
             e.Speed += normal * Strenth;
+            System.Console.WriteLine(e.ToString());
         }
     }
 

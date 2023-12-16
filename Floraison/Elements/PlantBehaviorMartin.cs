@@ -36,20 +36,30 @@ public class PlantBehaviorMartin : PlantBehavior
     //Indique si la plante peut etre controlée, utilisé dans la physique
     public bool Available = true;
 
+
+    public void SpawBrambleOnClick()
+    {
+        if (All.KbMInput.MouseLeftReleased && P.Input.PlayerControl == Controller.PlayerControlEnum.One)
+        {
+            Vec2 temp = Camera.Peek().ToWorldPosition((Vec2)All.KbMInput.Mouse.Position.ToVector2());
+            if (Game.WorldHitbox.IsCollidingWith(temp))
+            {
+                Bramble b = new Bramble(){
+                    Position = temp,
+                    CollisionLayer = Entite.CollisionLayerUnknow
+                };
+                b.Teams = Entite.TeamsEnum.Alone;
+                b.collisionType = Entite.CollisionTypeEnum.Fixed;
+                b.Spawn();
+                Console.WriteLine(temp.ToString());
+            }
+        }
+    }
+
     public override void Update()
     {
-        if (All.KbMInput.MouseLeftReleased)
-        {
-            Bramble b = new Bramble(){
-
-                Position = Camera.Peek().ToWorldPosition((Vec2)All.KbMInput.Mouse.Position.ToVector2()),
-                CollisionLayer = Entite.CollisionLayerPot
-            };
-            b.Teams = Entite.TeamsEnum.Alone;
-            b.collisionType = Entite.CollisionTypeEnum.Fixed;
-            b.Spawn();
-        }
-
+        
+        SpawBrambleOnClick();
         Vec2 newPosR = P.PositionRelative;
 
 
