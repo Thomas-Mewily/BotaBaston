@@ -26,7 +26,7 @@ public class GameLoader : Shortcut
                 PlayerControl = (Controller.PlayerControlEnum)i,
                 Teams = (Entite.TeamsEnum)i
             };
-            pot.CollisionType = Entite.CollisionTypeEnum.Solid;
+            pot.CollisionLayerAdd(Entite.CollisionLayerPot);
 
             pot.Position = Game.WorldHitbox.GetCoef(new Vec2(0.5f + coefX * 0.3f, 0.5f + coefY * 0.3f));
 
@@ -35,6 +35,7 @@ public class GameLoader : Shortcut
                 PlayerControl = (Controller.PlayerControlEnum)i,
                 Teams = (Entite.TeamsEnum)i,
             };
+            plant.CollisionLayerAdd(Entite.CollisionLayerPlant);
 
 
             pot.Plant(plant);
@@ -45,7 +46,7 @@ public class GameLoader : Shortcut
 
         Light l = new Light();
         l.Position = Game.WorldHitbox.GetCoef(0.5f);
-        l.Scale = Game.WorldHitbox.SizeY * 0.35f;
+        l.Scale = Game.WorldHitbox.SizeY * 0.3f /2;
         l.Spawn();
     }
 }

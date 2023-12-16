@@ -61,10 +61,24 @@ public class Entite : GameRelated
         NotInTheGame,
     }
 
-    public enum CollisionTypeEnum
+
+    public const int CollisionLayerUnknow = 0b1;
+    public const int CollisionLayerPot    = 0b10;
+    public const int CollisionLayerPlant  = 0b100;
+    public int CollisionLayer = 0;
+
+    public void CollisionLayerAdd(int layer) { CollisionLayer |= layer; } 
+    public void CollisionLayerRemove(int layer) { CollisionLayer &= (~layer); } 
+    public void CollisionLayerToggle(int layer) { CollisionLayer ^= layer; }
+    public bool IsOnCollisionLayer(int layer) { return (CollisionLayer & layer) != 0; }
+
+    public bool LayerOverlap(int layer) => (CollisionLayer & layer) != 0;
+    public bool LayerOverlap(Entite e) => LayerOverlap(e.CollisionLayer);
+
+    public enum CollisionEnableEnum
     {
-        Ghost,
-        Solid,
+        Enable,
+        Disable,
     }
 
     public void BasedOn(Entite e)
@@ -92,17 +106,21 @@ public class Entite : GameRelated
     public PlayerControlEnum PlayerControl = PlayerControlEnum.NotControlledByAPlayer;
     public Controller Input => From(PlayerControl);
 
-    public CollisionTypeEnum CollisionType = CollisionTypeEnum.Ghost;
+    public CollisionEnableEnum CollisionEnable = CollisionEnableEnum.Enable;
 
     public void MoveRelative(Vec2 add) => MoveRelative(add.X, add.Y);
-    public void MoveRelative(Vec2 add, CollisionTypeEnum type) => MoveRelative(add.X, add.Y, type);
-    public void MoveRelative(float x, float y) => MoveRelative(x, y, CollisionType);
-    public void MoveRelative(float x, float y, CollisionTypeEnum type) 
+    public void MoveRelative(Vec2 add, CollisionEnableEnum type) => MoveRelative(add.X, add.Y, type);
+    public void MoveRelative(float x, float y) => MoveRelative(x, y, CollisionEnable);
+    public void MoveRelative(float x, float y, CollisionEnableEnum type) 
     {
         PositionRelativeNoCollision += new Vec2(x, y);
         foreach (var v in AllOtherEntitiesColliding())
         {
-            v.PositionNoCollision = Position + new Vec2(Position, v.Position).WithLength(ScaledRadius + v.ScaledRadius);
+            var delta = new Vec2(Position, v.Position).WithLength(ScaledRadius + v.ScaledRadius+1/64f);
+            v.PositionNoCollision = Position + delta;
+            v.Speed += delta.WithLength((Speed).Length);
+            //Speed   -= delta.WithLength((v.Speed).Length);
+            Speed   -= delta.WithLength(v.Speed.Length)*0.5f;
         }
     }
 
@@ -157,11 +175,11 @@ public class Entite : GameRelated
     public IEnumerable<Entite> AllOtherEntitiesInsideMe() => AllOthersEntities().Inside(Hitbox);
     public IEnumerable<Entite> AllOtherEntitiesColliding() 
     {
-        if(CollisionType == CollisionTypeEnum.Ghost) 
+        if(CollisionEnable == CollisionEnableEnum.Disable) 
         {
             return Enumerable.Empty<Entite>();
         }
-        return AllOthersEntities().Inside(Hitbox).WithCollisionType(CollisionType);
+        return AllOthersEntities().Inside(Hitbox).Where(t => LayerOverlap(t)).WithCollisionEnable();
     }
 
     public IEnumerable<Entite> AllEntitiesWithMe() => AllEntities().Where(t => SameTeams(t));
