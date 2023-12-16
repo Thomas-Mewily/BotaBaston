@@ -108,9 +108,22 @@ public override void Update()
         Camera.Pop();
 
         Camera.Push(Camera.Hud);
-        foreach (var v in ((IEnumerable<Entite>)_Entites).ControlledByActivePlayer()) 
+        for (int i = (int)Controller.PlayerControlEnum.One; i <= (int)Controller.PlayerControlEnum.Four; i++)
         {
-            
+            int signX = (i - 1) / 2 % 2 == 0 ? -1 : 1;
+            int signY = (i - 1) % 2 == 0 ? -1 : 1;
+
+            float coefX = (signX + 1) / 2.0f;
+            float coefY = (signY + 1) / 2.0f;
+
+            if (Controller.From((Controller.PlayerControlEnum)i).IsConnected == false) { continue; }
+
+            var e = _Entites.First(t => t.PlayerControl == (Controller.PlayerControlEnum)i);
+            if(e == null) { continue; }
+
+            var c = e.Teams.GetColor();
+
+            //SpriteBatch.DrawText("P1", Camera.Peek().Rect.GetCoef(coefX, coefY), new Vec2(1 - coefX, 1 - coefY), c);
         }
         Camera.Pop();
     }
