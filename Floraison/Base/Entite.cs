@@ -143,10 +143,9 @@ public class Entite : GameRelated
             {
                 PositionNoCollision = v.Position - delta;
             }
-            if (collisionType == CollisionTypeEnum.Free){
-
-                //Speed   -= delta.WithLength((v.Speed).Length);
-                Speed   -= delta.WithLength(v.Speed.Length)*0.5f;
+            if (collisionType == CollisionTypeEnum.Free)
+            {
+                Speed -= delta.WithLength(v.Speed.Length)*0.5f;
             }
         }
     }
@@ -172,7 +171,15 @@ public class Entite : GameRelated
     public Vec2 Position 
     {
         get => OwnedBy == null ? PositionRelative : OwnedBy.Position + PositionRelative;
-        set => PositionRelative = (OwnedBy == null ? value : value - OwnedBy.Position);
+        set 
+        {
+            PositionRelative = (OwnedBy == null ? value : value - OwnedBy.Position);
+            if(OwnedBy == null) 
+            {
+                PositionRelative = new Vec2(Math.Min(Math.Max(PositionRelative.X, Game.WorldHitbox.XMin + ScaledRadius), Game.WorldHitbox.XMax - ScaledRadius),
+                    Math.Min(Math.Max(PositionRelative.Y, Game.WorldHitbox.YMin + ScaledRadius), Game.WorldHitbox.YMax - ScaledRadius));
+            }
+        }
     }
 
     public Vec2 PositionNoCollision
