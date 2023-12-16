@@ -40,7 +40,7 @@ public static class Extension
     public static IEnumerable<T> WithCollisionEnable<T>(this IEnumerable<T> i, CollisionEnableEnum collision = CollisionEnableEnum.Enable) where T : Entite => i.Where(t => t.CollisionEnable == collision);
 
 
-    public static IEnumerable<T> ControlledByActivePlayer<T>(this IEnumerable<T> i) where T : Entite => i.Where(t => t.PlayerControl == PlayerControlEnum.NotControlledByAPlayer && t.Input.IsConnected);
-    public static IEnumerable<T> ControlledByActiveOrInactivePlayer<T>(this IEnumerable<T> i) where T : Entite => i.Where(t => t.PlayerControl == PlayerControlEnum.NotControlledByAPlayer);
-    public static IEnumerable<T> NotControlledByPlayer<T>(this IEnumerable<T> i) where T : Entite => i.Where(t => t.PlayerControl != PlayerControlEnum.NotControlledByAPlayer);
+    public static IEnumerable<T> ControlledByActivePlayer<T>(this IEnumerable<T> i) where T : Entite => i.Where(t => t.PlayerControl != PlayerControlEnum.NotControlledByAPlayer && t.Input.IsConnected);
+    public static IEnumerable<T> ControlledByActiveOrInactivePlayer<T>(this IEnumerable<T> i) where T : Entite => i.Where(t => t.PlayerControl != PlayerControlEnum.NotControlledByAPlayer);
+    public static IEnumerable<T> NotControlledByPlayer<T>(this IEnumerable<T> i) where T : Entite => i.Where(t => t.PlayerControl == PlayerControlEnum.NotControlledByAPlayer);
 }

@@ -55,7 +55,7 @@ public class MainGame : Game
         Window.AllowUserResizing = true;
         //Window.AllowAltF4 = false;
         _graphics.PreferMultiSampling = true;
-        _graphics.GraphicsProfile = GraphicsProfile.Reach;
+        _graphics.GraphicsProfile = GraphicsProfile.HiDef;
     }
 
     protected override void Initialize()

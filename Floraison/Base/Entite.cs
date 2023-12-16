@@ -60,6 +60,10 @@ public class Entite : GameRelated
         /// </summary>
         NotInTheGame,
     }
+    public void DeleteMe() 
+    {
+        SpawnState = SpawnStateEnum.DeleteMePlz;
+    }
 
 
     public const int CollisionLayerUnknow = 0b1;
@@ -103,7 +107,12 @@ public class Entite : GameRelated
         }
     }
     public SpawnStateEnum SpawnState = SpawnStateEnum.Unknow;
-    public PlayerControlEnum PlayerControl = PlayerControlEnum.NotControlledByAPlayer;
+    private PlayerControlEnum _PlayerControl = PlayerControlEnum.NotControlledByAPlayer;
+    public PlayerControlEnum PlayerControl 
+    {
+        get => OwnedBy == null ? _PlayerControl : OwnedBy.PlayerControl;
+        set { _PlayerControl = value; if (OwnedBy != null) { OwnedBy.PlayerControl = value; } }
+    }
     public Controller Input => From(PlayerControl);
 
     public CollisionEnableEnum CollisionEnable = CollisionEnableEnum.Enable;

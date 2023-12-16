@@ -11,6 +11,8 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Base\Controller.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Base\Shortcut.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Elements\Logic.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Elements\Sun.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Elements\Light.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Elements\PlantBehaviorTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Elements\PlantBehaviorThomas.cs" />

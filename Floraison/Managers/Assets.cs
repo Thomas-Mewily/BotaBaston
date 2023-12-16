@@ -15,14 +15,37 @@ public class Assets
     public static Tex2 Plant;
     public static Tex2 Pot;
 
+    public static List<Tex2> Suns;
+
     public static Tex2 LoadTexture(string name) 
     {
         return All.Content.Load<Texture2D>(name);
+    }
+
+    public static List<Tex2> LoadListTexture(string name)
+    {
+        var l = new List<Tex2>();
+        int i = 0;
+        while (true) 
+        {
+            try 
+            {
+                var t = LoadTexture(name + "_" + i);
+                i++;
+                l.Push(t);
+            }
+            catch 
+            {
+                l.Reverse();
+                return l;
+            }
+        }
     }
 
     public static void Load() 
     {
         Plant = LoadTexture("plant");
         Pot   = LoadTexture("pot");
+        Suns = LoadListTexture("sun");
     }
 }

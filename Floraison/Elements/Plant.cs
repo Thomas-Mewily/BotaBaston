@@ -12,6 +12,8 @@ public abstract class PlantBehavior : TimeRelated
 {
     public PlantBehavior(Plant p) { P = p; }
     public Plant P;
+
+    public virtual void Grow() { }
 }
 
 public class Plant : Entite
@@ -23,7 +25,9 @@ public class Plant : Entite
 
     public override void Load()
     {
+        // Just testing...
         Behavior = new PlantBehaviorMartin(this);
+        //Behavior = new PlantBehaviorTest(this);
         Behavior.Load();
     }
 
@@ -61,7 +65,7 @@ public class Plant : Entite
 
         Vec2 drawPos = Position + offsetFlicker;
 
-        if (OwnedBy != null && Input.IsConnected)
+        if (OwnedBy != null)
         {
             SpriteBatch.DrawLine(drawPos, OwnedBy.Position, Color.Green, 0.4f);
         }

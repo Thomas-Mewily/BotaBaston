@@ -178,6 +178,12 @@ public class Camera
     public static Camera Peek() => Cameras.Peek();
     public static int Count => Cameras.Count;
 
-    public static Camera Hud = Camera.Center(new Rect2F(0, 0, 960, 540));
+    public static Camera Hud;
+
+    static Camera()
+    {
+        Hud = Camera.Center(new Rect2F(0, 0, 960, 540));
+        Hud.Options.SamplerState = SamplerState.LinearWrap;
+    }
 }
 

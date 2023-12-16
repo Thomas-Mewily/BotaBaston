@@ -18,8 +18,8 @@ public class GameLoader : Shortcut
 
         for (int i = (int)Controller.PlayerControlEnum.One; i <= (int)Controller.PlayerControlEnum.Four; i++) 
         {
-            int coefX = (i-1) / 2 % 2 == 0 ? -1 : 1;
-            int coefY = (i-1) % 2 == 0 ? -1 : 1;
+            int signX = (i - 1) % 2 == 0 ? -1 : 1;
+            int signY = (i - 1) / 2 % 2 == 0 ? 1 : -1;
 
             var pot = new Pot
             {
@@ -27,8 +27,7 @@ public class GameLoader : Shortcut
                 Teams = (Entite.TeamsEnum)i
             };
             pot.CollisionLayerAdd(Entite.CollisionLayerPot);
-
-            pot.Position = Game.WorldHitbox.GetCoef(new Vec2(0.5f + coefX * 0.3f, 0.5f + coefY * 0.3f));
+            pot.Position = Game.WorldHitbox.GetCoef(new Vec2(0.5f + signX * 0.3f, 0.5f + signY * 0.3f));
 
             var plant = new Plant
             {
@@ -36,7 +35,7 @@ public class GameLoader : Shortcut
                 Teams = (Entite.TeamsEnum)i,
             };
             plant.CollisionLayerAdd(Entite.CollisionLayerPlant);
-
+            plant.Scale = 1.25f;
 
             pot.Plant(plant);
 
@@ -48,5 +47,8 @@ public class GameLoader : Shortcut
         l.Position = Game.WorldHitbox.GetCoef(0.5f);
         l.Scale = Game.WorldHitbox.SizeY * 0.3f /2;
         l.Spawn();
+
+        Logic lo = new();
+        lo.Spawn();
     }
 }

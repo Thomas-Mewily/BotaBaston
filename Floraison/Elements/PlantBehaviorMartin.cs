@@ -10,69 +10,74 @@ namespace Floraison;
 public class PlantBehaviorMartin : PlantBehavior
 {
     public PlantBehaviorMartin(Plant p) : base(p) { }
-    
+
+    public override void Grow()
+    {
+        StemMaxLength += 0.5f;
+    }
+
     //taille max de la tige (hors étirage)
-    private float stemMaxLength = 5f;
+    public float StemMaxLength = 4f;
 
     //Taille de la tige max quand étirée (par rapport a stemMaxLength)
-    private float stemStreched = 1.15f;
+    public float StemStreched = 1.15f;
 
     // Inverse de la force qui attire la plante au pot
-    private float retractSpeed = .85f;
+    public float RetractSpeed = .85f;
     //Pourcentage de la distance de la plante transformée en vitesse
-    private float elasticStrenth = -0.25f;
+    public float ElasticStrenth = -0.25f;
 
     //Quantité de vitesse de la plante transférée au pot
-    private float potStrenth = 0.4f;
+    public float PotStrenth = 0.4f;
 
     //Distance a laquelle la plante doit etre du pot pour pouvoir controller de nouveau la plante après un lancé
-    private float controlDist = 0.4f;
+    public float ControlDist = 0.4f;
 
     //Indique si la plante peut etre controlée, utilisé dans la physique
-    private bool available = true;
+    public bool Available = true;
 
     public override void Update()
     {
         Vec2 newPosR = P.PositionRelative;
+
+
         if (P.Input.RightTrigger.JustReleased)
         {
             // newPosR.Normalize();
             P.Flicker(0f);
-            P.Speed = newPosR * elasticStrenth;
-            P.PlantedIn.Speed = newPosR * elasticStrenth * potStrenth;
-            available = false;
+            P.Speed = newPosR * ElasticStrenth;
+            P.PlantedIn.Speed = newPosR * ElasticStrenth * PotStrenth;
+            Available = false;
         }
         else
         {
-            if (P.Input.RightJoystick.IsNeutral || !available )
+            if (P.Input.RightJoystick.IsNeutral || !Available) //(!Available && LastTimeExtended.Elapsed.Seconds >= 3f))
             {
-                newPosR *= retractSpeed;
+                newPosR *= RetractSpeed;
             }
             else
             {
                 newPosR += P.Input.RightJoystick.UnitPerSecond * 30;
                 if (P.Input.RightTrigger.IsPressed) //Stretch
                 {
-                    float stretchedSize = stemMaxLength * stemStreched;
+                    float stretchedSize = StemMaxLength * StemStreched;
                     if (newPosR.Length > stretchedSize)
                     {
-                        newPosR.Normalize();
-                        newPosR *= stretchedSize;
+                        newPosR.Length = stretchedSize;
                         P.Flicker(0.2f);
                     }
                 }
                 else // Not pressed
                 {
-                    if (newPosR.Length > stemMaxLength)
+                    if (newPosR.Length > StemMaxLength)
                     {
-                        newPosR.Normalize();
-                        newPosR *= stemMaxLength;
+                        newPosR.Length = StemMaxLength;
                     }
                 }
             }
         }
 
-        if (P.Input.RightJoystick.IsNeutral || newPosR.Length <= controlDist * stemMaxLength) {available = true;}
+        if (P.Input.RightJoystick.IsNeutral || newPosR.Length <= ControlDist * StemMaxLength) {Available = true;}
 
         P.PositionRelative = newPosR;
 
