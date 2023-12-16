@@ -196,6 +196,8 @@ public class Entite : GameRelated
             if (!ReferenceEquals(v, this)) { yield return v; }
         }
     }
+
+
 }
 
 
