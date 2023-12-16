@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Useful;
@@ -20,7 +21,7 @@ public class TheGame : TimeRelated
     private GTime _Time;
     public GTime Time => _Time;
 
-    public Rect2F WorldHitbox = Rect2F.Center(new Vec2(32, 18 )* 3, Vec2.Zero);
+    public Rect2F WorldHitbox = Rect2F.Center(new Vec2(16, 9)*4, Vec2.Zero);
     public Camera Cam;
 
     public TheGame() 
@@ -104,6 +105,13 @@ public override void Update()
         HandleDispawn();
         _Time.Frames++;
 
+        Camera.Pop();
+
+        Camera.Push(Camera.Hud);
+        foreach (var v in ((IEnumerable<Entite>)_Entites).ControlledByActivePlayer()) 
+        {
+            
+        }
         Camera.Pop();
     }
 

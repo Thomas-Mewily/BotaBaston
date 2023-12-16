@@ -13,7 +13,7 @@ public class Light : Entite
 
     public override void Update()
     {
-        foreach(var t in EntitiesControlledByActivePlayer()) 
+        foreach(var t in EntitiesControlledByActivePlayer().Inside(this)) 
         {
             t.Score += ScorePerSecond / FrameRate;
         }

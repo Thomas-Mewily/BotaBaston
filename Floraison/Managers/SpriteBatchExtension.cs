@@ -140,7 +140,7 @@ public static class SpriteBatchExtension
     public static void Draw()
     {
         if (_DebugText.IsEmpty())  { return; }
-        Camera.Push(Camera.Center(new Rect2F(0, 0, 960, 540)));
+        Camera.Push(Camera.Hud);
         int line = 0;
         foreach (var v in _DebugText)
         {

@@ -61,13 +61,15 @@ public class Plant : Entite
 
         Vec2 drawPos = Position + offsetFlicker;
 
+        if (OwnedBy != null && Input.IsConnected)
+        {
+            SpriteBatch.DrawLine(drawPos, OwnedBy.Position, Color.Green, 0.4f);
+        }
+
         SpriteBatch.Draw(Assets.Plant, drawPos, null, c, Angle.Zero, Assets.Plant.Size() * 0.5f, 2*ScaledRadius / Assets.Plant.Size(), SpriteEffects.None, 0);
         
         
-        if(OwnedBy != null && Input.IsConnected) 
-        {
-            SpriteBatch.DrawLine(drawPos, OwnedBy.Position, Color.Green, 0.25f);
-        }
+
     }
 
     public void Flicker(float v)
