@@ -7,13 +7,18 @@ using System.Linq;
 
 namespace Floraison;
 
+
 public class Plant : Entite
 {
     public Pot PlantedIn => OwnedBy == null ? null : (Pot)OwnedBy;
 
+    
+
     public override void Update()
     {
+        
         PositionRelative += Input.RightJoystick.UnitPerSecond * 30;
+        
     }
 
     public override void Draw()
