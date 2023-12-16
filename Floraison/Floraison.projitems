@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Base\Controller.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Base\Shortcut.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Elements\Light.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Elements\Bramble.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Elements\PlantBehaviorTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Elements\PlantBehaviorThomas.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Elements\PlantBehaviorMartin.cs" />
