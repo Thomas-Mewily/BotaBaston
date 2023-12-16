@@ -130,6 +130,7 @@ public class Controller : GameRelated
     public override string ToString() => $"Controller {PlayerControl}, Left: {LeftJoystick.Axis}, Right: {RightJoystick.Axis}, Start {Start}, Select {Select}, A {A}, B {B}, X {X}, Y {Y}";
 }
 
+
 public struct Joystick
 {
     public Vec2 UnitPerSecond { get; private set; }

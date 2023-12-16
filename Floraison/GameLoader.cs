@@ -45,7 +45,7 @@ public class GameLoader : Shortcut
 
         Light l = new Light();
         l.Position = Game.WorldHitbox.GetCoef(0.5f);
-        l.Scale = Game.WorldHitbox.SizeY * 0.35f;
+        l.Scale = Game.WorldHitbox.SizeY * 0.05f;
         l.Spawn();
     }
 }
