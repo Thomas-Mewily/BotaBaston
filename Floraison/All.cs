@@ -24,6 +24,7 @@ public class All
     /// C'est pas mersenne twister mais ça devrait le faire
     /// </summary>
     public static Random Rng = new Random();
+    public static KeyboardMouseInput KbMInput;
 
     public static bool IsDrawTime => MainGame.IsDrawTime;
 }
@@ -69,7 +70,7 @@ public class MainGame : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         SpriteBatchExtension.Load();
         Assets.Load();
-
+        All.KbMInput = new KeyboardMouseInput();
         All.Screen = new Screen();
 
         All.Game = new TheGame();
@@ -80,7 +81,8 @@ public class MainGame : Game
     {
         IsDrawTime = false;
 
-        if (Keyboard.GetState().IsKeyDown(Keys.Escape)) { Exit(); }
+        All.KbMInput.Update();
+        if (Keys.Escape.JustPressed()) { Exit(); }
 
         All.Screen.Update();
         All.Performance.Update(gameTime);

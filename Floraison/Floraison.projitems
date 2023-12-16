@@ -18,6 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Elements\Plant.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Elements\Pot.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Managers\Assets.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Managers\InputManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Typedef.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Managers\Camera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Managers\Performance.cs" />
