@@ -9,27 +9,23 @@ namespace Floraison;
 
 public class Pot : Entite
 {
-    public Texture2D PotSprite;
-    public Plant PlantInside;
+    public Plant PlantInside { get; private  set; }
 
-    public override void Load()
+    public void Plant(Plant p) 
     {
-        PotSprite = Content.Load<Texture2D>("pot");
+        PlantInside = p;
+        p.OwnedBy = this;
     }
 
     public override void Update()
     {
-        Position += Input.LeftJoystick.UnitPerSecond * 10;
-        if (Input.B.JustPressed || Input.A.JustPressed) 
-        {
-            Position = Vec2.Zero;
-        }
-        
+        Position += Input.LeftJoystick.UnitPerSecond * 4;
     }
 
     public override void Draw()
     {
-        SpriteBatch.Draw(PotSprite, Position, null, Color.White, Angle.Zero, PotSprite.Size() * 0.5f, 2*ScaledRadius / PotSprite.Size(), SpriteEffects.None, 0);
+        SpriteBatch.DrawCircle(Position, ScaledRadius, Teams.GetColor());
 
+        SpriteBatch.Draw(Assets.Pot, Position, null, Color.White, Angle.Zero, Assets.Pot.Size() * 0.5f, 2 * ScaledRadius / Assets.Pot.Size(), SpriteEffects.None, 0);
     }
 }

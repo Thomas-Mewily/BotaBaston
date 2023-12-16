@@ -9,46 +9,40 @@ namespace Floraison;
 
 public class Plant : Entite
 {
-
-    private float tigeTailleMax;
-    // private static Vec2 offSetPot = new Vec2(0, -5);
-    public Texture2D PlantSprite;
-    public Pot PlantedIn;
-    public override void Load()
-    {
-        PlantSprite = Content.Load<Texture2D>("pot");
-    }
+    public Pot PlantedIn => OwnedBy == null ? null : (Pot)OwnedBy;
 
     public override void Update()
     {
-        Position += Input.RightJoystick.UnitPerSecond * 30;
-        if (Input.B.JustPressed || Input.A.JustPressed) 
-        {
-            Position = Vec2.Zero;
-        }
-        // SpriteBatch.DebugTextLn(Input.ToString());
+        PositionRelative += Input.RightJoystick.UnitPerSecond * 30;
     }
 
     public override void Draw()
     {
-        Color c = Teams.GetColor();
-
+        Color c = Input.IsConnected ? Color.White : Teams.GetColor();
+        /*
         if (Game.Time.MsInt / 250  % 2  == 0 && AllOtherEntitiesInsideMe().Any())
         {
             c = Color.White;
-        }
+        }*/
 
 
         /*
         if((int)SpawnTime.Elapsed.Seconds % 2 == 0) 
         {
             c = Color.White;
-        }*/
+        }
+        */
 
         c.A = 128;
         // SpriteBatch.DrawCircle(Position, ScaledRadius, c);
 
-        SpriteBatch.DrawLine(PlantedIn.Position, PlantedIn.Position + Position, Color.Green, 0.25f);
-        SpriteBatch.Draw(PlantSprite, Position + PlantedIn.Position , null, Color.LimeGreen, Angle.Zero, PlantSprite.Size() * 0.5f, 2*ScaledRadius / PlantSprite.Size(), SpriteEffects.None, 0);
+        SpriteBatch.Draw(Assets.Plant, Position, null, Color.LimeGreen, Angle.Zero, Assets.Plant.Size() * 0.5f, 2*ScaledRadius / Assets.Plant.Size(), SpriteEffects.None, 0);
+        
+        
+        if(OwnedBy != null && Input.IsConnected) 
+        {
+
+            SpriteBatch.DrawLine(Position, OwnedBy.Position, Color.Green, 0.25f);
+        }
     }
 }

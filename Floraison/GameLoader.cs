@@ -27,10 +27,10 @@ public class GameLoader
             {
                 PlayerControl = (Controller.PlayerControlEnum)i,
                 Teams = (Entite.TeamsEnum)i,
-                PlantedIn = pot,
             };
 
-            pot.PlantInside = plant;
+            pot.Plant(plant);
+
             plant.Spawn();
             pot.Spawn();
         }

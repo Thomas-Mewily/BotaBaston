@@ -12,6 +12,11 @@ namespace Floraison;
 
 public class Entite : GameRelated
 {
+    /// <summary>
+    /// Affect Relative Position And Teams
+    /// </summary>
+    public Entite OwnedBy = null;
+
     public Entite Spawn() 
     {
         Game.Spawn(this);
@@ -64,14 +69,40 @@ public class Entite : GameRelated
         Scale    = e.Scale;
     }
 
-    public TeamsEnum Teams = TeamsEnum.Neutral;
+    public TeamsEnum _Teams = TeamsEnum.Neutral;
+    public TeamsEnum Teams 
+    {
+        get => OwnedBy == null ? _Teams : OwnedBy.Teams;
+        set 
+        {
+            _Teams = value;
+            if(OwnedBy != null) 
+            {
+                OwnedBy.Teams = value;
+            }
+        }
+    }
     public SpawnStateEnum SpawnState = SpawnStateEnum.Unknow;
     public PlayerControlEnum PlayerControl = PlayerControlEnum.NotControlledByAPlayer;
     public Controller Input => From(PlayerControl);
 
     public GTime SpawnTime;
 
-    public Vec2 Position = 1;
+    public Vec2 PositionRelative = 0;
+    public Vec2 Position 
+    {
+        get => OwnedBy == null ? PositionRelative : OwnedBy.Position + PositionRelative;
+        set => PositionRelative = (OwnedBy == null ? value : value - OwnedBy.Position);
+    }
+
+    public Vec2 Speed;
+
+    public void ApplySpeed() 
+    {
+        Position += Speed;
+        Speed *= 0.95f;
+    }
+
     public float ScaledRadius => Radius * Scale;
     public float Radius  = 1;
 
