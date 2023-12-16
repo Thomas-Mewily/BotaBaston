@@ -46,7 +46,7 @@ public class Plant : Entite
         c.A = 128;
         // SpriteBatch.DrawCircle(Position, ScaledRadius, c);
 
+        SpriteBatch.DrawLine(PlantedIn.Position, PlantedIn.Position + Position, Color.Green, 0.25f);
         SpriteBatch.Draw(PlantSprite, Position + PlantedIn.Position, null, Color.LimeGreen, Angle.Zero, PlantSprite.Size() * 0.5f, 2*ScaledRadius / PlantSprite.Size(), SpriteEffects.None, 0);
-        // SpriteBatch.DrawLine(Position, Position + Vec2.One * 2, Color.Green, 0.25f);
     }
 }
