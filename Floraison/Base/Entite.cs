@@ -17,7 +17,7 @@ public class Entite : GameRelated
     /// </summary>
     public Entite OwnedBy = null;
 
-    public Entite Spawn() 
+    public Entite Spawn()
     {
         Game.Spawn(this);
         return this;
@@ -29,10 +29,10 @@ public class Entite : GameRelated
         // Tout seul
         Alone = 0,
 
-        One   = 1,
-        Two   = 2,
+        One = 1,
+        Two = 2,
         Three = 3,
-        Four  = 4,
+        Four = 4,
 
         // Environnement and stuff
         Neutral,
@@ -49,7 +49,7 @@ public class Entite : GameRelated
         };
     }
 
-    public enum SpawnStateEnum 
+    public enum SpawnStateEnum
     {
         Unknow,
         CreatedThisFrame,
@@ -61,22 +61,28 @@ public class Entite : GameRelated
         NotInTheGame,
     }
 
-    public void BasedOn(Entite e) 
+    public enum CollisionTypeEnum
     {
-        Teams    = e.Teams;
+        Ghost,
+        Solid,
+    }
+
+    public void BasedOn(Entite e)
+    {
+        Teams = e.Teams;
         Position = e.Position;
-        Radius   = e.Radius;
-        Scale    = e.Scale;
+        Radius = e.Radius;
+        Scale = e.Scale;
     }
 
     public TeamsEnum _Teams = TeamsEnum.Neutral;
-    public TeamsEnum Teams 
+    public TeamsEnum Teams
     {
         get => OwnedBy == null ? _Teams : OwnedBy.Teams;
-        set 
+        set
         {
             _Teams = value;
-            if(OwnedBy != null) 
+            if (OwnedBy != null)
             {
                 OwnedBy.Teams = value;
             }
@@ -86,13 +92,46 @@ public class Entite : GameRelated
     public PlayerControlEnum PlayerControl = PlayerControlEnum.NotControlledByAPlayer;
     public Controller Input => From(PlayerControl);
 
+    public CollisionTypeEnum CollisionType = CollisionTypeEnum.Ghost;
+
+    public void MoveRelative(Vec2 add) => MoveRelative(add.X, add.Y);
+    public void MoveRelative(Vec2 add, CollisionTypeEnum type) => MoveRelative(add.X, add.Y, type);
+    public void MoveRelative(float x, float y) => MoveRelative(x, y, CollisionType);
+    public void MoveRelative(float x, float y, CollisionTypeEnum type) 
+    {
+        PositionRelativeNoCollision += new Vec2(x, y);
+        foreach (var v in AllOtherEntitiesColliding())
+        {
+            v.PositionNoCollision = Position + new Vec2(Position, v.Position).WithLength(ScaledRadius + v.ScaledRadius);
+        }
+    }
+
     public GTime SpawnTime;
 
-    public Vec2 PositionRelative = 0;
+    public Vec2 PositionRelativeNoCollision = 0;
+
+    /// <summary>
+    /// Also check for collision
+    /// </summary>
+    public Vec2 PositionRelative 
+    {
+        get => PositionRelativeNoCollision;
+        set => MoveRelative(new Vec2(PositionRelativeNoCollision, value));
+    }
+
+    /// <summary>
+    /// Also check for collision
+    /// </summary>
     public Vec2 Position 
     {
         get => OwnedBy == null ? PositionRelative : OwnedBy.Position + PositionRelative;
         set => PositionRelative = (OwnedBy == null ? value : value - OwnedBy.Position);
+    }
+
+    public Vec2 PositionNoCollision
+    {
+        get => OwnedBy == null ? PositionRelativeNoCollision : OwnedBy.PositionNoCollision + PositionRelativeNoCollision;
+        set => PositionRelativeNoCollision = (OwnedBy == null ? value : value - OwnedBy.PositionNoCollision);
     }
 
     public Vec2 Speed;
@@ -107,6 +146,7 @@ public class Entite : GameRelated
     public float Radius  = 1;
 
     public float Scale   = 1;
+    public float Score = 0;
 
     public Circle Hitbox => new(Position, ScaledRadius);
 
@@ -115,6 +155,14 @@ public class Entite : GameRelated
     /// </summary>
     /// <returns></returns>
     public IEnumerable<Entite> AllOtherEntitiesInsideMe() => AllOthersEntities().Inside(Hitbox);
+    public IEnumerable<Entite> AllOtherEntitiesColliding() 
+    {
+        if(CollisionType == CollisionTypeEnum.Ghost) 
+        {
+            return Enumerable.Empty<Entite>();
+        }
+        return AllOthersEntities().Inside(Hitbox).WithCollisionType(CollisionType);
+    }
 
     public IEnumerable<Entite> AllEntitiesWithMe() => AllEntities().Where(t => SameTeams(t));
     public IEnumerable<Entite> AllOthersEntitiesWithMe() => AllOthersEntities().Where(t => SameTeams(t));

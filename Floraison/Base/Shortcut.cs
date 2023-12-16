@@ -17,5 +17,7 @@ public class Shortcut
     public int   FrameRateInt => TheGame.FrameRate;
     public float FrameRate => TheGame.FrameRate;
 
+    public Random Rng => All.Rng;
+
     public Controller[] AllControllers() => Controller.Controllers;
 }

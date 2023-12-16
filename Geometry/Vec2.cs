@@ -20,6 +20,8 @@ public struct Vec2
     public bool HaveXLength => X != 0;
     public bool HaveYLength => Y != 0;
 
+    public Vec2 WithLength(float length) { Length = length; return this; }
+
     public float XY { set { X = value; Y = value; } }
     public Vec2 Absolute => new(Math.Abs(X), Math.Abs(Y));
 
@@ -154,3 +156,5 @@ public struct Vec2
     public static Vec2 MultiplyAngle(Vec2 vec2, Angle angle) => new(vec2.X * MathF.Cos(angle.Radian) - vec2.Y * MathF.Sin(angle.Radian), vec2.X * MathF.Sin(angle.Radian) + vec2.Y * MathF.Cos(angle.Radian));
     #endregion
 }
+
+

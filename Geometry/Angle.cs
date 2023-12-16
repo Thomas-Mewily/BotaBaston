@@ -23,6 +23,7 @@ public struct Angle
     /// ]PI; PI]
     /// </summary>
     public Angle NormalizedCenter { get { var tmp = Normalized; return tmp < FlatRadian ? tmp : tmp - TurnRadian; } }
+    public Angle Abs => Angle.FromRadian(Math.Abs(Radian));
 
     public float Cos => MathF.Cos(Radian);
     public float Sin => MathF.Sin(Radian);
@@ -43,6 +44,8 @@ public struct Angle
             return angleNormalise >= debutNormalise || angleNormalise <= finNormalise;
         }
     }
+
+    public Vec2 WithLength(float length) => Vec2.FromAngle(this, length);
 
     #region Const
     public const float TurnRadian = MathF.PI * 2;

@@ -70,7 +70,7 @@ public class Plant : Entite
         }
     }
 
-    internal void Flicker(float v)
+    public void Flicker(float v)
     {
         offsetFlicker.X = All.Rng.FloatUniform(-v, v);
         offsetFlicker.Y = All.Rng.FloatUniform(-v, v);

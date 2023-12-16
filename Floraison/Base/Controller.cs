@@ -130,7 +130,7 @@ public class Controller : GameRelated
     public override string ToString() => $"Controller {PlayerControl}, Left: {LeftJoystick.Axis}, Right: {RightJoystick.Axis}, Start {Start}, Select {Select}, A {A}, B {B}, X {X}, Y {Y}";
 }
 
-public struct Joystick 
+public struct Joystick
 {
     public Vec2 UnitPerSecond { get; private set; }
     /// <summary>
@@ -140,16 +140,16 @@ public struct Joystick
     public Vec2 AxisOld { get; private set; }
     public Vec2 Square { get; private set; }
 
-    public bool IsNeutral  => Axis == Vec2.Zero;
+    public bool IsNeutral => Axis == Vec2.Zero;
     public bool WasNeutral => AxisOld == Vec2.Zero;
 
-    public void Update(Vec2 v) 
+    public void Update(Vec2 v)
     {
         AxisOld = Axis;
         Square = v;
         v.Y = -v.Y;
-        
-        if(v.LengthSquared > 1) 
+
+        if (v.LengthSquared > 1)
         {
             v.Normalize();
         }
