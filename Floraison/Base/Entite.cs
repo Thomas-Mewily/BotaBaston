@@ -62,6 +62,7 @@ public class Entite : GameRelated
     }
 
 
+
     public const int CollisionLayerUnknow = 0b1;
     public const int CollisionLayerPot    = 0b10;
     public const int CollisionLayerPlant  = 0b100;
@@ -79,6 +80,13 @@ public class Entite : GameRelated
     {
         Enable,
         Disable,
+    }
+    public enum CollisionTypeEnum
+    {
+        // L'entité ne recoit pas l'inertie , mais elle collisionne quand meme avec les autres 
+        Fixed,
+        // L'entité recoit l'inertie
+        Free,
     }
 
     public void BasedOn(Entite e)
@@ -117,12 +125,24 @@ public class Entite : GameRelated
         foreach (var v in AllOtherEntitiesColliding())
         {
             var delta = new Vec2(Position, v.Position).WithLength(ScaledRadius + v.ScaledRadius+1/64f);
-            v.PositionNoCollision = Position + delta;
-            v.Speed += delta.WithLength((Speed).Length);
-            //Speed   -= delta.WithLength((v.Speed).Length);
-            Speed   -= delta.WithLength(v.Speed.Length)*0.5f;
+            if (v.collisionType == CollisionTypeEnum.Free)
+            {
+                v.Speed += delta.WithLength((Speed).Length);
+                v.PositionNoCollision = Position + delta;
+            }
+            else if (v.collisionType == CollisionTypeEnum.Fixed)
+            {
+                PositionNoCollision = v.Position - delta;
+            }
+            if (collisionType == CollisionTypeEnum.Free){
+
+                //Speed   -= delta.WithLength((v.Speed).Length);
+                Speed   -= delta.WithLength(v.Speed.Length)*0.5f;
+            }
         }
     }
+
+    public CollisionTypeEnum collisionType = CollisionTypeEnum.Free;
 
     public GTime SpawnTime;
 

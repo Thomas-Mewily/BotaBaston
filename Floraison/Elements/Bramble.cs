@@ -10,7 +10,7 @@ namespace Floraison;
 public class Bramble : Entite
 {
 
-    public float Strenth;
+    public float Strenth = 1f;
     public override void Update()
     {
         foreach(var e in AllOthersEntitiesAgainstMe().Inside(this)) 
