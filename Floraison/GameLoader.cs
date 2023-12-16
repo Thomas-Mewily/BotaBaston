@@ -15,10 +15,24 @@ public class GameLoader
     {
         for (int i = (int)Controller.PlayerControlEnum.One; i <= (int)Controller.PlayerControlEnum.Four; i++) 
         {
-            var p = new Pot();
-            p.PlayerControl = (Controller.PlayerControlEnum)i;
-            p.Teams = (Entite.TeamsEnum)i;
-            p.Spawn();
+            var pot = new Pot
+            {
+                PlayerControl = (Controller.PlayerControlEnum)i,
+                Teams = (Entite.TeamsEnum)i
+            };
+
+
+
+            var plant = new Plant
+            {
+                PlayerControl = (Controller.PlayerControlEnum)i,
+                Teams = (Entite.TeamsEnum)i,
+                PlantedIn = pot,
+            };
+
+            pot.PlantInside = plant;
+            plant.Spawn();
+            pot.Spawn();
         }
     }
 }

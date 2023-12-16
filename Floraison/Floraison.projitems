@@ -12,13 +12,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Base\Controller.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Base\Shortcut.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Elements\Plant.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Managers\Assets.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Elements\Pot.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Typedef.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Managers\Camera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Managers\Performance.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Managers\Screen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Managers\SpriteBatchExtension.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Elements\Pot.cs" />
     <Compile Include="..\Floraison\Base\GTime.cs" />
     <Compile Include="..\Floraison\Base\Entite.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Base\GameRelated.cs" />

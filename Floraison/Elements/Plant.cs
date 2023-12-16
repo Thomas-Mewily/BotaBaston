@@ -7,16 +7,24 @@ using System.Linq;
 
 namespace Floraison;
 
-public class Pot : Entite
+public class Plant : Entite
 {
+    public Texture2D PlantSprite;
+
+    public Pot PlantedIn;
+    public override void Load()
+    {
+        PlantSprite = Content.Load<Texture2D>("pot");
+    }
+
     public override void Update()
     {
-        Position += Input.LeftJoystick.UnitPerSecond;
+        Position += Input.RightJoystick.UnitPerSecond * 3;
         if (Input.B.JustPressed || Input.A.JustPressed) 
         {
             Position = Vec2.Zero;
         }
-        SpriteBatch.DebugTextLn(Input.ToString());
+        // SpriteBatch.DebugTextLn(Input.ToString());
     }
 
     public override void Draw()
@@ -37,9 +45,9 @@ public class Pot : Entite
         */
 
         c.A = 128;
-        SpriteBatch.DrawCircle(Position, ScaledRadius, c);
+        // SpriteBatch.DrawCircle(Position, ScaledRadius, c);
 
-        SpriteBatch.Draw(Assets.Plant, Position, null, Color.White, Angle.Zero, Assets.Plant.Size() * 0.5f, 2*ScaledRadius / Assets.Plant.Size(), SpriteEffects.None, 0);
-        SpriteBatch.DrawLine(Position, Position + Vec2.One * 2, Color.Green, 0.25f);
+        SpriteBatch.Draw(PlantSprite, Position + PlantedIn.Position, null, Color.LimeGreen, Angle.Zero, PlantSprite.Size() * 0.5f, 2*ScaledRadius / PlantSprite.Size(), SpriteEffects.None, 0);
+        // SpriteBatch.DrawLine(Position, Position + Vec2.One * 2, Color.Green, 0.25f);
     }
 }
