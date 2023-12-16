@@ -38,6 +38,9 @@ public struct Rect2F
     public static bool operator ==(Rect2F a, Rect2F b) => a._Min == b._Min && a.Size == b.Size;
     public static bool operator !=(Rect2F a, Rect2F b) => !(a == b);
 
+    public static Rect2F Center(Vec2 area, Vec2 center) => new Rect2F(center - area / 2, area);
+    public Vec2 GetCoef(Vec2 Coef) => Min + Size * Coef;
+
     public override string ToString() => _Min + " ; " + _Size;
     public override bool Equals(object obj) => (obj != null && obj is Rect2F v && v == this);
     public override int GetHashCode() => _Min.GetHashCode()+_Size.GetHashCode();

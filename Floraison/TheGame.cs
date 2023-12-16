@@ -20,7 +20,7 @@ public class TheGame : TimeRelated
     private GTime _Time;
     public GTime Time => _Time;
 
-    public Rect2F WorldHitbox = new Rect2F(0, 0, 32, 18);
+    public Rect2F WorldHitbox = Rect2F.Center(new Vec2(32, 18), Vec2.Zero);
     public Camera Cam;
 
     public TheGame() 
