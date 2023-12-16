@@ -17,6 +17,6 @@ public struct Circle
     public bool IsCollidingWith(Circle other) 
     {
         //return (Center - other.Center).LengthSquared <= Radius * Radius + other.Radius * other.Radius;
-        return (Center - other.Center).Length <= Radius+other.Radius;
+        return (Center - other.Center).Length < Radius+other.Radius;
     }
 }

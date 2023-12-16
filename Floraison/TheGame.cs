@@ -95,6 +95,12 @@ public class TheGame : TimeRelated
         {
             obj.Update();
         }
+
+        foreach (Entite obj in _Entites)
+        {
+            obj.ApplySpeed();
+        }
+
         HandleDispawn();
         _Time.Frames++;
 

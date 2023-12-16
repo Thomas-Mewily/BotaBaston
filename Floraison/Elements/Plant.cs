@@ -20,7 +20,7 @@ public class Plant : Entite
 
     public override void Load()
     {
-        Behavior = new PlantBehaviorMartin(this);
+        Behavior = new PlantBehaviorThomas(this);
         Behavior.Load();
     }
 
@@ -58,10 +58,10 @@ public class Plant : Entite
 
         SpriteBatch.Draw(Assets.Plant, Position, null, c, Angle.Zero, Assets.Plant.Size() * 0.5f, 2*ScaledRadius / Assets.Plant.Size(), SpriteEffects.None, 0);
         
-        
+        /*
         if(OwnedBy != null && Input.IsConnected) 
         {
             SpriteBatch.DrawLine(Position, OwnedBy.Position, Color.Green, 0.25f);
-        }
+        }*/
     }
 }

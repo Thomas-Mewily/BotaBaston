@@ -16,6 +16,17 @@ public class SpriteBatchOption
     public RasterizerState RasterizerState = RasterizerState.CullNone;
 
     public SpriteBatchOption() { }
+
+    public SpriteBatchOption Clone() 
+    {
+        SpriteBatchOption s = new SpriteBatchOption();
+        s.SortMode = this.SortMode;
+        s.Blend = this.Blend;
+        s.SamplerState = this.SamplerState;
+        s.DepthStencilState=this.DepthStencilState;
+        s.RasterizerState = this.RasterizerState;
+        return s;
+    }
 }
 
 public class Camera
@@ -89,6 +100,22 @@ public class Camera
     public static Camera Default => Camera.Center(new Rect2F(0, 0, All.Screen.WindowSize.X, All.Screen.WindowSize.Y));
 
     private int NbTimeScreenChangedWhenUpdated = -1;
+
+    public Camera Clone() 
+    {
+        Camera c = new Camera
+        {
+            Options = Options.Clone(),
+            NeedUpdate = NeedUpdate,
+            _Rect = _Rect,
+
+            Rotation = Rotation,
+            _TransformMatrix = _TransformMatrix,
+            _InvertedMatrix = _InvertedMatrix,
+            NbTimeScreenChangedWhenUpdated = NbTimeScreenChangedWhenUpdated
+        };
+        return c;
+    }
 
     public void UpdateMatrix()
     {
