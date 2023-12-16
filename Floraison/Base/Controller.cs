@@ -137,10 +137,15 @@ public struct Joystick
     /// With Dead Zone
     /// </summary>
     public Vec2 Axis { get; private set; }
+    public Vec2 AxisOld { get; private set; }
     public Vec2 Square { get; private set; }
+
+    public bool IsNeutral  => Axis == Vec2.Zero;
+    public bool WasNeutral => AxisOld == Vec2.Zero;
 
     public void Update(Vec2 v) 
     {
+        AxisOld = Axis;
         Square = v;
         v.Y = -v.Y;
         
