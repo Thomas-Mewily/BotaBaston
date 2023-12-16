@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Floraison", "Floraison\Floraison.shproj", "{A0CDBD0E-3A41-42B7-9425-A838BC2C7383}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FloraisonWindows", "FloraisonWindows\FloraisonWindows.csproj", "{D947AA77-A8F3-4269-976F-3E20866F6855}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Useful", "Useful\Useful.csproj", "{5197AD83-04C1-4ACE-A188-41B99A9FBC4B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geometry", "Geometry\Geometry.csproj", "{1B9180CD-BBBD-440B-BBB8-05EA92ADD127}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D947AA77-A8F3-4269-976F-3E20866F6855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D947AA77-A8F3-4269-976F-3E20866F6855}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D947AA77-A8F3-4269-976F-3E20866F6855}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D947AA77-A8F3-4269-976F-3E20866F6855}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5197AD83-04C1-4ACE-A188-41B99A9FBC4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5197AD83-04C1-4ACE-A188-41B99A9FBC4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5197AD83-04C1-4ACE-A188-41B99A9FBC4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5197AD83-04C1-4ACE-A188-41B99A9FBC4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B9180CD-BBBD-440B-BBB8-05EA92ADD127}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B9180CD-BBBD-440B-BBB8-05EA92ADD127}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B9180CD-BBBD-440B-BBB8-05EA92ADD127}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B9180CD-BBBD-440B-BBB8-05EA92ADD127}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9A7C9B78-7BCD-4CE9-A594-F815AF442CA9}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Floraison\Floraison.projitems*{a0cdbd0e-3a41-42b7-9425-a838bc2c7383}*SharedItemsImports = 13
+		Floraison\Floraison.projitems*{d947aa77-a8f3-4269-976f-3e20866f6855}*SharedItemsImports = 5
+	EndGlobalSection
+EndGlobal

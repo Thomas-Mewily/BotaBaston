@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>6efba8a9-a407-4029-bdd0-651d22a87386</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Floraison</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Base\Controller.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Base\Shortcut.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Typedef.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Managers\Camera.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Managers\Performance.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Managers\Screen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Managers\SpriteBatchExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Elements\Pot.cs" />
+    <Compile Include="..\Floraison\Base\GTime.cs" />
+    <Compile Include="..\Floraison\Base\Entite.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Base\GameRelated.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Base\TimeRelated.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameLoader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TheGame.cs" />
+    <Compile Include="..\Floraison\All.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Content\" />
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />
+    <None Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />
+  </ItemGroup>
+</Project>
