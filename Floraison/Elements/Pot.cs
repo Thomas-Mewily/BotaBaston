@@ -7,28 +7,29 @@ using System.Linq;
 
 namespace Floraison;
 
-public class Plant : Entite
+public class Pot : Entite
 {
-    //public Texture2D PotSprite;
+    public Texture2D PotSprite;
+    public Plant PlantInside;
 
     public override void Load()
     {
-        //PotSprite = Content.Load<Texture2D>("pot");
+        PotSprite = Content.Load<Texture2D>("pot");
     }
 
     public override void Update()
     {
-        Position += Input.LeftJoystick.UnitPerSecond;
+        Position += Input.LeftJoystick.UnitPerSecond * 10;
         if (Input.B.JustPressed || Input.A.JustPressed) 
         {
             Position = Vec2.Zero;
         }
-        SpriteBatch.DebugTextLn(Input.ToString());
+        
     }
 
     public override void Draw()
     {
-
+        SpriteBatch.Draw(PotSprite, Position, null, Color.White, Angle.Zero, PotSprite.Size() * 0.5f, 2*ScaledRadius / PotSprite.Size(), SpriteEffects.None, 0);
 
     }
 }
