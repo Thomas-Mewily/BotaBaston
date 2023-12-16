@@ -134,7 +134,7 @@ public static class SpriteBatchExtension
     public static void DrawRawLine(this SpriteBatch spriteBatch, Vec2 begin, Vec2 end, Color c, float tickness = 1) 
     {
         var d = end - begin;
-        spriteBatch.Draw(_Pixel, begin, null, c, d.Angle - Angle.FromDegree(90), new Vec2(0.5f, 0), new Vec2(tickness, d.Length), SpriteEffects.None, 0);
+        spriteBatch.Draw(_Pixel, begin, null, c, d.Angle - Angle.FromDegree(90f), new Vec2(0.5f, 0), new Vec2(tickness, d.Length), SpriteEffects.None, 0);
     }
 
     public static void Draw()
