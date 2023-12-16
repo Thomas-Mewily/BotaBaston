@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Base\Controller.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Base\Shortcut.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Elements\Plant.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Managers\Assets.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Typedef.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Managers\Camera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Managers\Performance.cs" />

@@ -68,6 +68,7 @@ public class MainGame : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         SpriteBatchExtension.Load();
+        Assets.Load();
 
         All.Screen = new Screen();
 

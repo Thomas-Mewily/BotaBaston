@@ -9,13 +9,6 @@ namespace Floraison;
 
 public class Pot : Entite
 {
-    public Texture2D PotSprite;
-
-    public override void Load()
-    {
-        PotSprite = Content.Load<Texture2D>("pot");
-    }
-
     public override void Update()
     {
         Position += Input.LeftJoystick.UnitPerSecond;
@@ -40,12 +33,13 @@ public class Pot : Entite
         if((int)SpawnTime.Elapsed.Seconds % 2 == 0) 
         {
             c = Color.White;
-        }*/
+        }
+        */
 
         c.A = 128;
         SpriteBatch.DrawCircle(Position, ScaledRadius, c);
 
-        SpriteBatch.Draw(PotSprite, Position, null, Color.White, Angle.Zero, PotSprite.Size() * 0.5f, 2*ScaledRadius / PotSprite.Size(), SpriteEffects.None, 0);
+        SpriteBatch.Draw(Assets.Plant, Position, null, Color.White, Angle.Zero, Assets.Plant.Size() * 0.5f, 2*ScaledRadius / Assets.Plant.Size(), SpriteEffects.None, 0);
         SpriteBatch.DrawLine(Position, Position + Vec2.One * 2, Color.Green, 0.25f);
     }
 }
