@@ -126,4 +126,6 @@ public static class SpriteBatchExtension
         _DebugText.Clear();
         Camera.Pop();
     }
+
+    public static Vec2 Size(this Texture2D t) => new Vec2(t.Width, t.Height);
 }

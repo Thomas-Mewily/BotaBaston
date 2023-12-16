@@ -77,7 +77,7 @@ public class Entite : GameRelated
 
     public float Scale   = 1;
 
-    public Circle Hitbox => new(Position, Radius * Scale);
+    public Circle Hitbox => new(Position, ScaledRadius);
 
     /// <summary>
     /// This is not included inside
