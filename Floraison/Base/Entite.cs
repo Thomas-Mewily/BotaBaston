@@ -185,6 +185,8 @@ public class Entite : GameRelated
     public IEnumerable<Entite> AllEntitiesWithMe() => AllEntities().Where(t => SameTeams(t));
     public IEnumerable<Entite> AllOthersEntitiesWithMe() => AllOthersEntities().Where(t => SameTeams(t));
 
+    public IEnumerable<Entite> AllOthersEntitiesAgainstMe() => AllOthersEntities().AgainstTeams(this);
+
     /// <summary>
     /// This is not included inside
     /// </summary>
