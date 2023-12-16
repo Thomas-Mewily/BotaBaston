@@ -31,8 +31,21 @@ public class PlantBehaviorMartin : PlantBehavior
     //Indique si la plante peut etre controlée, utilisé dans la physique
     private bool available = true;
 
+    private bool spawned = true;
+
     public override void Update()
     {
+        if (spawned)
+        {
+            Bramble b = new Bramble(){
+                Position = new Vec2(2, 2),
+                CollisionLayer = Entite.CollisionLayerPot
+            };
+            b.Teams = Entite.TeamsEnum.Alone;
+            b.Spawn();
+            spawned = false;
+        }
+
         Vec2 newPosR = P.PositionRelative;
         if (P.Input.RightTrigger.JustReleased)
         {

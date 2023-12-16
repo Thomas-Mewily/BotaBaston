@@ -13,9 +13,11 @@ public class Bramble : Entite
     public float Strenth;
     public override void Update()
     {
-        foreach(var e in AllOtherEntitiesColliding()) 
+        foreach(var e in AllOthersEntitiesAgainstMe().Inside(this)) 
         {
-            // e.Speed += e.
+            Vec2 normal = e.Position - Position;
+            normal.Normalize();
+            e.Speed += normal * Strenth;
         }
     }
 
@@ -24,7 +26,7 @@ public class Bramble : Entite
         var c = Camera.Peek().Clone();
         c.Options.Blend = BlendState.AlphaBlend;
         Camera.Push(c);
-        SpriteBatch.DrawCircle(Position, ScaledRadius, Color.Yellow);
+        SpriteBatch.DrawCircle(Position, ScaledRadius, Color.Aqua);
         Camera.Pop();
     }
 }
