@@ -23,45 +23,48 @@ public class PlantBehaviorMartin : PlantBehavior
 
     public override void Update()
     {
+        Vec2 newPosR = P.PositionRelative;
         if (P.Input.RightTrigger.JustReleased)
         {
-            // P.PositionRelative.Normalize();
+            // newPosR.Normalize();
             P.Flicker(0f);
-            P.Speed = P.PositionRelative * elasticStrenth;
+            P.Speed = newPosR * elasticStrenth;
+            P.PlantedIn.Speed = newPosR * elasticStrenth * 0.2f;
             available = false;
         }
         else
         {
             if (P.Input.RightJoystick.IsNeutral || !available )
             {
-                P.PositionRelative *= retractSpeed;
+                newPosR *= retractSpeed;
             }
             else
             {
-                P.PositionRelative += P.Input.RightJoystick.UnitPerSecond * 30;
+                newPosR += P.Input.RightJoystick.UnitPerSecond * 30;
                 if (P.Input.RightTrigger.IsPressed) //Stretch
                 {
                     float stretchedSize = stemMaxLength * stemStreched;
-                    if (P.PositionRelative.Length > stretchedSize)
+                    if (newPosR.Length > stretchedSize)
                     {
-                        P.PositionRelative.Normalize();
-                        P.PositionRelative *= stretchedSize;
+                        newPosR.Normalize();
+                        newPosR *= stretchedSize;
                         P.Flicker(0.2f);
                     }
                 }
                 else // Not pressed
                 {
-                    if (P.PositionRelative.Length > stemMaxLength)
+                    if (newPosR.Length > stemMaxLength)
                     {
-                        P.PositionRelative.Normalize();
-                        P.PositionRelative *= stemMaxLength;
+                        newPosR.Normalize();
+                        newPosR *= stemMaxLength;
                     }
                 }
-
             }
         }
 
         if (P.Input.RightJoystick.IsNeutral) {available = true;}
+
+        P.PositionRelative = newPosR;
 
     }
 }
