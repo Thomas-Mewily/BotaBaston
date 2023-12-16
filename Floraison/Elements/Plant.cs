@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Linq;
+using Useful;
 
 namespace Floraison;
 
@@ -18,9 +19,11 @@ public class Plant : Entite
     public Pot PlantedIn => OwnedBy == null ? null : (Pot)OwnedBy;
     public PlantBehavior Behavior;
 
+    private Vec2 offsetFlicker = Vec2.Zero;
+
     public override void Load()
     {
-        Behavior = new PlantBehaviorThomas(this);
+        Behavior = new PlantBehaviorMartin(this);
         Behavior.Load();
     }
 
@@ -56,12 +59,20 @@ public class Plant : Entite
 
         SpriteBatch.DrawCircle(Position, ScaledRadius, c);
 
-        SpriteBatch.Draw(Assets.Plant, Position, null, c, Angle.Zero, Assets.Plant.Size() * 0.5f, 2*ScaledRadius / Assets.Plant.Size(), SpriteEffects.None, 0);
+        Vec2 drawPos = Position + offsetFlicker;
+
+        SpriteBatch.Draw(Assets.Plant, drawPos, null, c, Angle.Zero, Assets.Plant.Size() * 0.5f, 2*ScaledRadius / Assets.Plant.Size(), SpriteEffects.None, 0);
         
-        /*
+        
         if(OwnedBy != null && Input.IsConnected) 
         {
-            SpriteBatch.DrawLine(Position, OwnedBy.Position, Color.Green, 0.25f);
-        }*/
+            SpriteBatch.DrawLine(drawPos, OwnedBy.Position, Color.Green, 0.25f);
+        }
+    }
+
+    internal void Flicker(float v)
+    {
+        offsetFlicker.X = All.Rng.FloatUniform(-v, v);
+        offsetFlicker.Y = All.Rng.FloatUniform(-v, v);
     }
 }

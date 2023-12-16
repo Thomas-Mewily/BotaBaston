@@ -19,7 +19,7 @@ public class Pot : Entite
 
     public override void Update()
     {
-        MoveRelative(Input.LeftJoystick.UnitPerSecond * 4);
+        Position += Input.LeftJoystick.UnitPerSecond * 10;
     }
 
     public override void Draw()

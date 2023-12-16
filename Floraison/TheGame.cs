@@ -81,7 +81,7 @@ public class TheGame : TimeRelated
         _Entites.Clear();
     }
 
-    public override void Update()
+public override void Update()
     {
         Camera.Push(Cam);
 
