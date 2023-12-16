@@ -23,38 +23,38 @@ public class PlantBehaviorMartin : PlantBehavior
 
     public override void Update()
     {
+        var posRel = P.PositionRelative;
+
         if (P.Input.RightTrigger.JustReleased)
         {
             // P.PositionRelative.Normalize();
             P.Flicker(0f);
-            P.Speed = P.PositionRelative * elasticStrenth;
+            P.Speed = posRel * elasticStrenth;
             available = false;
         }
         else
         {
             if (P.Input.RightJoystick.IsNeutral || !available )
             {
-                P.PositionRelative *= retractSpeed;
+                posRel *= retractSpeed;
             }
             else
             {
-                P.PositionRelative += P.Input.RightJoystick.UnitPerSecond * 30;
+                posRel += P.Input.RightJoystick.UnitPerSecond * 30;
                 if (P.Input.RightTrigger.IsPressed) //Stretch
                 {
                     float stretchedSize = stemMaxLength * stemStreched;
-                    if (P.PositionRelative.Length > stretchedSize)
+                    if (posRel.Length > stretchedSize)
                     {
-                        P.PositionRelative.Normalize();
-                        P.PositionRelative *= stretchedSize;
+                        posRel.Length = stemMaxLength;
                         P.Flicker(0.2f);
                     }
                 }
                 else // Not pressed
                 {
-                    if (P.PositionRelative.Length > stemMaxLength)
+                    if (posRel.Length > stemMaxLength)
                     {
-                        P.PositionRelative.Normalize();
-                        P.PositionRelative *= stemMaxLength;
+                        posRel.Length = stemMaxLength;
                     }
                 }
 
@@ -62,6 +62,8 @@ public class PlantBehaviorMartin : PlantBehavior
         }
 
         if (P.Input.RightJoystick.IsNeutral) {available = true;}
+
+        P.PositionRelative = posRel;
 
     }
 }

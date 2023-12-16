@@ -102,8 +102,7 @@ public class Entite : GameRelated
         PositionRelativeNoCollision += new Vec2(x, y);
         foreach (var v in AllOtherEntitiesColliding())
         {
-            var f = Position+new Vec2(Position, v.Position).WithLength(ScaledRadius + v.ScaledRadius);
-            v.PositionNoCollision = f;
+            v.PositionNoCollision = Position + new Vec2(Position, v.Position).WithLength(ScaledRadius + v.ScaledRadius);
         }
     }
 
