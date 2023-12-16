@@ -42,6 +42,9 @@ public static class SpriteBatchExtension
         _Pixel.Dispose();
     }
 
+    public static void DrawCircle(this SpriteBatch spriteBatch, Vec2 pos, float radius, Color color)
+    => DrawEllipse(spriteBatch, pos, new Vec2(radius, radius), color);
+
     public static void DrawEllipse(this SpriteBatch spriteBatch, Vec2 pos, float radius, Color color)
     => DrawEllipse(spriteBatch, pos, new Vec2(radius, radius), color);
 
@@ -112,6 +115,27 @@ public static class SpriteBatchExtension
 
     private static List<string> _DebugText = new();
 
+    public enum LineEdgeMode 
+    {
+        None,
+        Circle,
+    }
+
+    public static void DrawLine(this SpriteBatch spriteBatch, Vec2 begin, Vec2 end, Color c, float tickness = 1, LineEdgeMode mode = LineEdgeMode.Circle)
+    {
+        spriteBatch.DrawRawLine(begin, end, c, tickness);
+        if (mode == LineEdgeMode.Circle) 
+        {
+            spriteBatch.DrawCircle(begin, tickness / 2, c);
+            spriteBatch.DrawCircle(end, tickness / 2, c);
+        }
+    }
+
+    public static void DrawRawLine(this SpriteBatch spriteBatch, Vec2 begin, Vec2 end, Color c, float tickness = 1) 
+    {
+        var d = end - begin;
+        spriteBatch.Draw(_Pixel, begin, null, c, -d.Angle, new Vec2(0.5f, 0), new Vec2(tickness, d.Length), SpriteEffects.None, 0);
+    }
 
     public static void Draw()
     {

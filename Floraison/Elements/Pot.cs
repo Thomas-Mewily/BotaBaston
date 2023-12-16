@@ -7,13 +7,13 @@ using System.Linq;
 
 namespace Floraison;
 
-public class Pot : Entite
+public class Plant : Entite
 {
-    public Texture2D PotSprite;
+    //public Texture2D PotSprite;
 
     public override void Load()
     {
-        PotSprite = Content.Load<Texture2D>("pot");
+        //PotSprite = Content.Load<Texture2D>("pot");
     }
 
     public override void Update()
@@ -28,20 +28,7 @@ public class Pot : Entite
 
     public override void Draw()
     {
-        Color c = Teams.GetColor();
 
 
-        if (Game.Time.MsInt / 250  % 2  == 0 && AllOtherEntitiesInsideMe().Any())
-        {
-            c = Color.White;
-        }
-        /*
-        if((int)SpawnTime.Elapsed.Seconds % 2 == 0) 
-        {
-            c = Color.White;
-        }*/
-
-        //SpriteBatch.DrawEllipse(Position, ScaledRadius, c);
-        SpriteBatch.Draw(PotSprite, Position, null, Color.White, Angle.Zero, PotSprite.Size() * 0.5f, 2*ScaledRadius / PotSprite.Size(), SpriteEffects.None, 0);
     }
 }
