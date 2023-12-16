@@ -113,7 +113,6 @@ public override void Update()
             
         }
         Camera.Pop();
-
     }
 
     public override void Draw()
