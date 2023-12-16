@@ -112,10 +112,6 @@ public static class SpriteBatchExtension
 
     private static List<string> _DebugText = new();
 
-    public static void PreDraw()
-    {
-        _DebugText.Clear();
-    }
 
     public static void Draw()
     {
@@ -127,6 +123,7 @@ public static class SpriteBatchExtension
             All.SpriteBatch.DrawText(v, new Vec2(0, -line * (int)TextSize.Normal), new Vec2(0, 0), Color.Gray, TextSize.Normal);
             line--;
         }
+        _DebugText.Clear();
         Camera.Pop();
     }
 }

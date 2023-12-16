@@ -37,7 +37,6 @@ public class TheGame : TimeRelated
 
     private void HandleSpawn() 
     {
-        _Entites.AddRange(_CreatedThisFrame);
         while (!_CreatedThisFrame.IsEmpty())
         {
             var obj = _CreatedThisFrame.Pop();

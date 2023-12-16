@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using static Floraison.Controller;
 using static Floraison.Entite;
 
@@ -32,6 +33,17 @@ public class Entite : GameRelated
         Neutral,
     }
 
+    public bool SameTeams(Entite e) => ReferenceEquals(this, e) ? true : SameTeams(e.Teams);
+    public bool SameTeams(TeamsEnum teams)
+    {
+        return Teams switch
+        {
+            TeamsEnum.Alone => teams == TeamsEnum.Neutral,
+            TeamsEnum.Neutral => true,
+            _ => Teams == teams,
+        };
+    }
+
     public enum SpawnStateEnum 
     {
         Unknow,
@@ -55,7 +67,7 @@ public class Entite : GameRelated
     public TeamsEnum Teams = TeamsEnum.Neutral;
     public SpawnStateEnum SpawnState = SpawnStateEnum.Unknow;
     public PlayerControlEnum PlayerControl = PlayerControlEnum.NotControlledByAPlayer;
-    public Controller Input => Controller.From(PlayerControl);
+    public Controller Input => From(PlayerControl);
 
     public GTime SpawnTime;
 
@@ -71,13 +83,16 @@ public class Entite : GameRelated
     /// This is not included inside
     /// </summary>
     /// <returns></returns>
-    public IEnumerable<Entite> AllEntitiesInsideMe() => AllEntitiesExceptMe().Inside(Hitbox);
+    public IEnumerable<Entite> AllOtherEntitiesInsideMe() => AllOthersEntities().Inside(Hitbox);
+
+    public IEnumerable<Entite> AllEntitiesWithMe() => AllEntities().Where(t => SameTeams(t));
+    public IEnumerable<Entite> AllOthersEntitiesWithMe() => AllOthersEntities().Where(t => SameTeams(t));
 
     /// <summary>
     /// This is not included inside
     /// </summary>
     /// <returns></returns>
-    public IEnumerable<Entite> AllEntitiesExceptMe()
+    public IEnumerable<Entite> AllOthersEntities()
     {
         foreach (var v in AllEntities())
         {

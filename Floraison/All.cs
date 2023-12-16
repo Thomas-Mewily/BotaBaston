@@ -92,7 +92,6 @@ public class MainGame : Game
     {
         IsDrawTime = true;
 
-        SpriteBatchExtension.PreDraw();
         GraphicsDevice.Clear(All.BackgroundColor);
         All.Game.Draw();
 
