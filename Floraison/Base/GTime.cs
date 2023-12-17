@@ -9,7 +9,7 @@ public struct GTime
     public int Hz_60 { get => Frames * 60 / TheGame.FrameRate; set => Frames = value * TheGame.FrameRate / 60; }
     public int MsInt => Frames * 1000 / TheGame.FrameRate;
 
-    public float Seconds { get => Frames / TheGame.FrameRate; set => Frames = (int)(value * TheGame.FrameRate); }
+    public float Seconds { get => Frames / (float)TheGame.FrameRate; set => Frames = (int)(value * TheGame.FrameRate); }
     public float Ms { get => Seconds * 1000; set => Seconds = value / 1000; }
 
     public static GTime OneSecond => new(1f);

@@ -2,10 +2,13 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Useful;
+using static Floraison.SpriteBatchExtension;
 
 namespace Floraison;
 
@@ -33,6 +36,17 @@ public struct ParticleLine
 
 public class TheGame : TimeRelated
 {
+    public enum GameStateEnum
+    {
+        Reset,
+        Begin,
+        Playing,
+        Over,
+    }
+    public Entite Winner = null;
+
+    public GameStateEnum GameState = GameStateEnum.Reset;
+
     /// <summary>
     /// They will be in Entites at the end of the frame
     /// </summary>
@@ -44,13 +58,14 @@ public class TheGame : TimeRelated
     private GTime _Time;
     public GTime Time => _Time;
 
-    public Rect2F WorldHitbox = Rect2F.Center(new Vec2(16, 9)*4, Vec2.Zero);
+    private GTime TimeWinning;
+
+    public Rect2F WorldHitbox = Rect2F.Centered(new Vec2(16, 9)*4, Vec2.Zero);
     public Camera Cam;
 
-    public TheGame() 
-    {
-        Cam = Camera.Center(WorldHitbox);
-    }
+    private GameLoader Loader = new();
+
+    public TheGame() { }
 
     public void Spawn(Entite gameObj) 
     {
@@ -87,6 +102,13 @@ public class TheGame : TimeRelated
 
     public override void Load()
     {
+        GameState = GameStateEnum.Begin;
+        ParticlesLines.Clear();
+        _Time = GTime.Second(0);
+        Cam = Camera.Centered(WorldHitbox);
+        Winner = null;
+
+        Loader.Load();
         HandleSpawn();
         HandleDispawn();
     }
@@ -105,8 +127,20 @@ public class TheGame : TimeRelated
         _Entites.Clear();
     }
 
-public override void Update()
+    private void Reset() 
     {
+        Unload();
+        Load();
+        GameState = GameStateEnum.Begin;
+    }
+
+    public override void Update()
+    {
+        if(GameState == GameStateEnum.Reset) 
+        {
+            Reset();
+        }
+
         Camera.Push(Cam);
 
         foreach (Controller c in AllControllers()) 
@@ -114,18 +148,65 @@ public override void Update()
             c.Update();
         }
 
-        HandleSpawn();
-        foreach (Entite obj in _Entites)
+        switch (GameState)
         {
-            obj.Update();
-        }
+            case GameStateEnum.Begin:
+                { 
+                    if(Time.Seconds > 3) 
+                    {
+                        GameState = GameStateEnum.Playing;
+                    }
+                }
+                break;
+            case GameStateEnum.Playing:
+            {
+                HandleSpawn();
 
-        foreach (Entite obj in _Entites)
-        {
-            obj.ApplySpeed();
-        }
+                foreach (Entite obj in _Entites)
+                {
+                    obj.Update();
+                    if (obj.CoefAboutToWin >= 1)
+                    {
+                        Winner = obj;
+                        TimeWinning = Time;
+                        GameState = GameStateEnum.Over;
+                    }
+                }
 
-        HandleDispawn();
+                foreach (Entite obj in _Entites)
+                {
+                    obj.ApplySpeed();
+
+                    if (obj.TouchSomeLight == false)
+                    {
+                        obj.Score *= 0.96f;
+                    }
+                    else
+                    {
+                        obj.TouchSomeLight = false;
+                    }
+                }
+
+                HandleDispawn();
+            }
+            break;
+            case GameStateEnum.Over:
+            {
+                Cam.Center = (Cam.Center * 16 + Winner.Position) / 17;
+                var sc = Winner.ScaledRadius * 6;
+                float YZoom = (Cam.Zoom.Y * 16 + sc) / 17;
+                Cam.Zoom = new Vec2(YZoom * WorldHitbox.SizeX / WorldHitbox.SizeY, YZoom);
+
+                foreach(var c in AllControllers()) 
+                {
+                    if(c.Start.JustPressed || c.Select.JustPressed) 
+                    {
+                        GameState = GameStateEnum.Reset;
+                    }
+                }
+            }
+            break;
+        }
         _Time.Frames++;
 
         Camera.Pop();
@@ -146,7 +227,6 @@ public override void Update()
             if (d < 1) 
             {
                 var c = v.C;
-                //c.A = (byte)(255 * d);
                 SpriteBatch.DrawLine(v.PosBegin, v.PosEnd, v.C, v.Tickness * (1 - d), SpriteBatchExtension.LineEdgeMode.Circle);
             }
         }
@@ -166,13 +246,66 @@ public override void Update()
 
             if (Controller.From((Controller.PlayerControlEnum)i).IsConnected == false) { continue; }
 
-            var e = _Entites.First(t => t.PlayerControl == (Controller.PlayerControlEnum)i);
+            var e = _Entites.First(t => t.PlayerControl == (Controller.PlayerControlEnum)i && t.OwnedBy == null);
             if (e == null) { continue; }
 
             var c = e.Teams.GetColor();
 
-            SpriteBatch.DrawText("P" + i +" "+e.Score.ToString("0.0"), Camera.Peek().Rect.GetCoef(coefX, coefY), new Vec2(coefX, coefY), c);
-            //SpriteBatch.DrawText("P" + i, Camera.Peek().Rect.GetCoef(coefX, coefY)*0.5f, new Vec2(1 - coefX, 1 - coefY), c);
+            Vec2 shake_vec = Vec2.Zero;
+            string txt = "P" + i;
+
+            switch (GameState) 
+            {
+                case GameStateEnum.Begin: 
+                {
+                    if (e.Input.IsConnected) 
+                    {
+                        txt += " prêt";
+                    }
+                }
+                break;
+                case GameStateEnum.Playing:
+                {
+                    txt += " " + (e.CoefAboutToWin * 100).ToString("0") + " %";
+                    float Shaking = Math.Max(0, e.CoefAboutToWin - 0.62f);
+                    shake_vec = new Vec2(Rng.FloatUniform(-1, 1), Rng.FloatUniform(-1, 1)) * Shaking * 18;
+                }break;
+                case GameStateEnum.Over:
+                {
+                    txt += (e == Winner ? " winner" : " loser");
+                }
+                break;
+                default:break;
+            }
+
+            float color_effect_begin_at = 0.3f;
+            if(e.CoefAboutToWin > color_effect_begin_at) 
+            {
+                float c1 = (e.CoefAboutToWin - color_effect_begin_at) / (1 - color_effect_begin_at);
+                float coef = (Angle.FromDegree(Time.Seconds * 360/(3f*(1-c1)+c1*1.5f)).Cos + 1) / 2;
+                var tmp = (new Vec3(255, 255, 255) * (1 - coef) + new Vec3(c.R, c.G, c.B) * coef) / 255;
+                c = new Color(tmp.X, tmp.Y, tmp.Z);
+            }
+
+            SpriteBatch.DrawText(txt, Camera.Peek().Rect.GetCoef(coefX, coefY) + shake_vec, new Vec2(coefX, coefY), c, (1 + e.CoefAboutToWin) * (float)SpriteBatchExtension.TextSize.Normal);
+        }
+
+        string[] debut_txt = new string[]
+        {
+            "À vos marques", "prêts ?", "Plantez!"
+        };
+
+        if (GameState == GameStateEnum.Begin) 
+        {
+            int idx = (int)Math.Floor(Time.Seconds);
+            if(idx >= 0 && idx < debut_txt.Length) 
+            {
+                float m = Time.Seconds % 1;
+                float y = 0.5f + (m - 0.5f) * 0.1f;
+
+                SpriteBatch.DrawText(debut_txt[idx], Camera.Peek().Rect.GetCoef(0.5f, y), new Vec2(0.5f, 0.5f), Color.White, (2+ m) * (float)TextSize.Normal);
+            }
+
         }
         Camera.Pop();
 

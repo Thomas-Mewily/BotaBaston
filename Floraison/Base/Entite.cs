@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using Useful;
 using static Floraison.Controller;
 using static Floraison.Entite;
@@ -17,6 +18,7 @@ public class Entite : GameRelated
     /// Affect Relative Position And Teams
     /// </summary>
     public Entite OwnedBy = null;
+    public Entite BaseEntite => OwnedBy ?? this;
 
     public Entite Spawn()
     {
@@ -154,6 +156,16 @@ public class Entite : GameRelated
         //     }
         // }
 
+        if(add.Length > 1.00001f) 
+        {
+            //while(Math.Floor(add.Length) > 1) 
+            for(int i = (int)Math.Floor(add.Length); i >= 0; i--)
+            {
+                MoveRelative(add.WithLength(1), type);
+            }
+            add.Length %= 1;
+        }
+
         PositionRelativeNoCollision += add;
         foreach (var v in AllOtherEntitiesColliding())
         {
@@ -174,9 +186,9 @@ public class Entite : GameRelated
             if(CollisionType == CollisionTypeEnum.Free) 
             {
                 //Speed   -= delta.WithLength((v.Speed).Length);
-                Speed -= delta.WithLength(v.Speed.Length) * 0.5f;
+                //Speed -= delta.WithLength(v.Speed.Length) * 0.5f;
+                Speed = 0;
             }
-
 
 
             v.EntityIsCollidingWithMe(this);
@@ -187,10 +199,11 @@ public class Entite : GameRelated
             var add_reversed = add;
             for (int i = Rng.IntUniform(0, 2); i >= 0; i--) 
             {
-                var rng_vec = new Vec2(Rng.FloatUniform(-1, 1), Rng.FloatUniform(-1, 1)) * 0.125f + add_reversed.WithLength(Rng.FloatUniform(-1,1)* ScaledRadius);
-                Game.ParticlesLines.Push(new ParticleLine(rng_vec+Position + semi_delta + add_reversed, rng_vec+Position + semi_delta - add_reversed, this.Teams.GetColor(), 0.75f, Game.Time, GTime.Second(0.5f)));
+                var rng_vec = new Vec2(Rng.FloatUniform(-1, 1), Rng.FloatUniform(-1, 1)) * 0.25f + add_reversed.WithLength(Rng.FloatUniform(-1,1)* ScaledRadius);
+                Game.ParticlesLines.Push(new ParticleLine(rng_vec+Position + semi_delta + add_reversed, rng_vec+Position + semi_delta - add_reversed, this.Teams.GetColor(), 0.5f, Game.Time, GTime.Second(0.5f)));
             }
         }
+
     }
 
     public CollisionTypeEnum CollisionType = CollisionTypeEnum.Free;
@@ -243,7 +256,16 @@ public class Entite : GameRelated
     public float Radius  = 1;
 
     public float Scale   = 1;
+
+    /// <summary>
+    /// [0, 1... 0 = losing. 1 = winning
+    /// </summary>
+    public float CoefAboutToWin => Score / 15; // Nombre de secondes
+    /// <summary>
+    /// +1 max à chaque secondes
+    /// </summary>
     public float Score = 0;
+    public bool TouchSomeLight = false;
 
     public Circle Hitbox => new(Position, ScaledRadius);
 
@@ -278,6 +300,16 @@ public class Entite : GameRelated
         }
     }
 
+
+    public Entite SetRandomPositionForPowerUp() 
+    {
+        for (int i = 0; i < 1000; i++)
+        {
+            Position = Game.WorldHitbox.GetCoef(Rng.NextSingle(), Rng.NextSingle());
+            if (!this.EntitiesControlledByActiveOrInactivePlayer().Inside(this).Any()) { break; }
+        }
+        return this;
+    }
 
 }
 

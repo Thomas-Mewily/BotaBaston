@@ -16,6 +16,8 @@ public class Assets
     public static Tex2 Pot;
     public static Tex2 Bramble;
     public static Tex2 BrambleSeed;
+    public static Tex2 Petal;
+    public static Tex2 PowerUpPetal;
 
     public static List<Tex2> Suns;
     public static List<Tex2> Spirals;
@@ -54,5 +56,7 @@ public class Assets
 
         Suns = LoadListTexture("sun");
         Spirals = LoadListTexture("spiral");
+        Petal = LoadTexture("petal");
+        PowerUpPetal = LoadTexture("power_up_petal");
     }
 }

@@ -60,9 +60,9 @@ public class Logic : Entite
 
     public override void Update()
     {
-        if(SpawnTime.Elapsed.Frames % 10 == 0) 
+        if(SpawnTime.Elapsed.Frames % 20 == 0) 
         {
-            if (LastPowerUp.Elapsed.Seconds > 10 && AllEntities().OfType<Sun>().Count() < 3) 
+            if (LastPowerUp.Elapsed.Seconds > 8 && AllEntities().OfType<Sun>().Count() < 3 && AllEntities().OfType<Petal>().Count() < 3) 
             {
                 LastPowerUp = Game.Time;
                 SpawnPowerUp();

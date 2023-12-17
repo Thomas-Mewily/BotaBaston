@@ -15,7 +15,11 @@ public class Light : Entite
     {
         foreach(var t in EntitiesControlledByActivePlayer().Inside(this)) 
         {
-            t.Score += ScorePerSecond / FrameRate;
+            if(t.OwnedBy == null) 
+            {
+                t.BaseEntite.Score += ScorePerSecond / FrameRate;
+                t.BaseEntite.TouchSomeLight = true;
+            }
         }
     }
 

@@ -32,3 +32,25 @@ public class Sun : Entite
         }
     }
 }
+
+
+public class Petal : Entite
+{
+    public override void Update()
+    {
+        foreach (var v in EntitiesControlledByActivePlayer().Inside(this))
+        {
+            if (v is Plant p)
+            {
+                p.PowerUp = new PowerUpPetales(p);
+                DeleteMe();
+                break;
+            }
+        }
+    }
+
+    public override void Draw()
+    {
+        SpriteBatch.Draw(Assets.PowerUpPetal, Position, null, Color.White, 0, Assets.PowerUpPetal.Size() * 0.5f, 2 * ScaledRadius / Assets.PowerUpPetal.Size() * (1+Angle.FromDegree(SpawnTime.Elapsed).Sin*0.125f+0.125f), SpriteEffects.None, 0);
+    }
+}
