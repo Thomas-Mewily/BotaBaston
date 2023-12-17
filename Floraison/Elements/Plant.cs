@@ -16,25 +16,38 @@ public abstract class PlantBehavior : TimeRelated
     public virtual void Grow() { }
 }
 
+public class PlantPowerUp : TimeRelated
+{
+    public PlantPowerUp(Plant p) { P = p; }
+    public Plant P;
+
+    public override void Draw()
+    {
+        SpriteBatch.Draw(Assets.Plant, P.DrawPos, null, P.DrawColor, Angle.Zero, Assets.Plant.Size() * 0.5f, 2 * P.ScaledRadius / Assets.Plant.Size(), SpriteEffects.None, 0);
+    }
+}
+
 public class Plant : Entite
 {
     public Pot PlantedIn => OwnedBy == null ? null : (Pot)OwnedBy;
     public PlantBehavior Behavior;
+    public PlantPowerUp  PowerUp;
 
-    private Vec2 offsetFlicker = Vec2.Zero;
+    public Vec2 OffsetFlicker = Vec2.Zero;
+    public Vec2 DrawPos => Position + OffsetFlicker;
+    public Color DrawColor => Input.IsConnected ? Teams.GetColor() : Color.White;
 
     public override void Load()
     {
-        // Just testing...
+        PowerUp = new PlantPowerUp(this);
         Behavior = new PlantBehaviorMartin(this);
-        //Behavior = new PlantBehaviorTest(this);
         Behavior.Load();
     }
 
     public override void Update()
     {
         Behavior.Update();
-        //PositionRelative += Input.RightJoystick.UnitPerSecond * 4;
+        PowerUp.Update();
     }
 
     public override void Unload()
@@ -44,41 +57,24 @@ public class Plant : Entite
 
     public override void Draw()
     {
-        Color c = Input.IsConnected ? Teams.GetColor() : Color.White;
-        /*
-        if (Game.Time.MsInt / 250  % 2  == 0 && AllOtherEntitiesInsideMe().Any())
-        {
-            c = Color.White;
-        }*/
 
-
-        /*
-        if((int)SpawnTime.Elapsed.Seconds % 2 == 0) 
-        {
-            c = Color.White;
-        }
-        */
         Behavior.Draw();
 
 
         // SpriteBatch.DrawCircle(Position, ScaledRadius, c);
 
-        Vec2 drawPos = Position + offsetFlicker;
+        Vec2 drawPos = Position + OffsetFlicker;
 
         if (OwnedBy != null)
         {
             SpriteBatch.DrawLine(drawPos, OwnedBy.Position, Color.Green, 0.4f);
         }
-
-        SpriteBatch.Draw(Assets.Plant, drawPos, null, c, Angle.Zero, Assets.Plant.Size() * 0.5f, 2*ScaledRadius / Assets.Plant.Size(), SpriteEffects.None, 0);
-        
-        
-
+        PowerUp.Draw();
     }
 
     public void Flicker(float v)
     {
-        offsetFlicker.X = All.Rng.FloatUniform(-v, v);
-        offsetFlicker.Y = All.Rng.FloatUniform(-v, v);
+        OffsetFlicker.X = All.Rng.FloatUniform(-v, v);
+        OffsetFlicker.Y = All.Rng.FloatUniform(-v, v);
     }
 }

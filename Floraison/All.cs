@@ -74,7 +74,7 @@ public class MainGame : Game
         All.Screen = new Screen();
 
         All.Game = new TheGame();
-        new GameLoader().Load();
+        All.Game.Load();
     }
 
     protected override void Update(GameTime gameTime)

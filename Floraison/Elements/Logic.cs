@@ -12,25 +12,27 @@ public class Logic : Entite
 {
     GTime LastPowerUp;
 
-    private void SpawnSun() 
+    private void SpawnRandomPowerUp() 
     {
-        Sun s = new Sun();
-        for(int i = 0; i < 1000; i++) 
+        int rng = Rng.IntUniform(0, 100);
+        if(rng <= 25) 
         {
-            s.Position = Game.WorldHitbox.GetCoef(Rng.NextSingle(), Rng.NextSingle());
-            if (!s.EntitiesControlledByActiveOrInactivePlayer().Inside(s).Any()) { break; }
+            new Sun().SetRandomPositionForPowerUp().Spawn();
         }
-        s.Spawn();
+        else 
+        {
+            new Petal().SetRandomPositionForPowerUp().Spawn();
+        }
     }
 
     public override void Update()
     {
-        if(SpawnTime.Elapsed.Frames % 10 == 0) 
+        if(SpawnTime.Elapsed.Frames % 20 == 0) 
         {
-            if (LastPowerUp.Elapsed.Seconds > 10 && AllEntities().OfType<Sun>().Count() < 3) 
+            if (LastPowerUp.Elapsed.Seconds > 8 && AllEntities().OfType<Sun>().Count() < 3 && AllEntities().OfType<Petal>().Count() < 3) 
             {
                 LastPowerUp = Game.Time;
-                SpawnSun();
+                SpawnRandomPowerUp();
             }
         }
     }

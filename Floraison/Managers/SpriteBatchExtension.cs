@@ -67,7 +67,8 @@ public static class SpriteBatchExtension
         Normal = 36,
     }
 
-    public static void DrawText(this SpriteBatch spriteBatch, Font font, string text, Vec2 pos, Vec2 coefCenter, Color color, TextSize size = TextSize.Normal)
+
+    public static void DrawText(this SpriteBatch spriteBatch, Font font, string text, Vec2 pos, Vec2 coefCenter, Color color, float size = (float)TextSize.Normal)
     {
         var m = (Vec2)font.MeasureString(text);
         //float scale = (float)size / m.Y * Camera.Peek().Rect.SizeY / All.Screen.WindowSize.Y;
@@ -76,11 +77,11 @@ public static class SpriteBatchExtension
         pos -= m * scale * coefCenter;
         spriteBatch.DrawString(font, text, pos, color, 0, Vec2.Zero, scale, SpriteEffects.None, 0);
     }
-    public static void DrawText(this SpriteBatch spriteBatch, Font font, string text, Vec2 pos, Color color, TextSize size = TextSize.Normal)
+    public static void DrawText(this SpriteBatch spriteBatch, Font font, string text, Vec2 pos, Color color, float size = (float)TextSize.Normal)
     => DrawText(spriteBatch, font, text, pos, new Vec2(0.5f, 0), color, size);
-    public static void DrawText(this SpriteBatch spriteBatch, string text, Vec2 pos, Color color, TextSize size = TextSize.Normal)
+    public static void DrawText(this SpriteBatch spriteBatch, string text, Vec2 pos, Color color, float size = (float)TextSize.Normal)
         => DrawText(spriteBatch, FontDefault, text, pos, new Vec2(0.5f, 0), color, size);
-    public static void DrawText(this SpriteBatch spriteBatch, string text, Vec2 pos, Vec2 coefCenter, Color color, TextSize size = TextSize.Normal)
+    public static void DrawText(this SpriteBatch spriteBatch, string text, Vec2 pos, Vec2 coefCenter, Color color, float size = (float)TextSize.Normal)
         => DrawText(spriteBatch, FontDefault, text, pos, coefCenter, color, size);
 
 
@@ -145,7 +146,7 @@ public static class SpriteBatchExtension
         int line = 0;
         foreach (var v in _DebugText)
         {
-            All.SpriteBatch.DrawText(v, new Vec2(0, -line * (int)TextSize.Normal), new Vec2(0, 0), Color.Gray, TextSize.Normal);
+            All.SpriteBatch.DrawText(v, new Vec2(0, -line * (int)TextSize.Normal), new Vec2(0, 0), Color.Gray);
             line--;
         }
         _DebugText.Clear();

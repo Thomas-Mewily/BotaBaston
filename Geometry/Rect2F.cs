@@ -25,6 +25,16 @@ public struct Rect2F
     public Vec2 Size { get => _Size; set => _Size = value; }
     public Vec2 Max { get => _Min + _Size; set => _Size += (Max-value); }
 
+    public Vec2 Center
+    {
+        get => _Min + _Size / 2;
+        set
+        {
+            Min = value - Size / 2;
+            Max = value + Size / 2;
+        }
+    }
+
     public float Area => SizeX * SizeY;
 
     public Rect2F(Vec2 min, Vec2 size) { _Min = min; _Size = size; }
@@ -39,7 +49,7 @@ public struct Rect2F
     public static bool operator ==(Rect2F a, Rect2F b) => a._Min == b._Min && a.Size == b.Size;
     public static bool operator !=(Rect2F a, Rect2F b) => !(a == b);
 
-    public static Rect2F Center(Vec2 area, Vec2 center) => new Rect2F(center - area / 2, area);
+    public static Rect2F Centered(Vec2 area, Vec2 center) => new Rect2F(center - area / 2, area);
     public Vec2 GetCoef(Vec2 Coef) => Min + Size * Coef;
     public Vec2 GetCoef(float x, float y) => GetCoef(new Vec2(x, y));
 

@@ -50,6 +50,7 @@ public class Camera
     }
     public Vec2 Min { get => _Rect.Min; set { _Rect.Min = value; NeedUpdate = true; } }
     public Vec2 Max { get => _Rect.Max; set { _Rect.Max = value; NeedUpdate = true; } }
+    public Vec2 Center { get => _Rect.Center; set { _Rect.Center = value; NeedUpdate = true; } }
 
     //public Rect2F? Bound = null;
 
@@ -86,7 +87,7 @@ public class Camera
     {
         _Rect = area;
     }
-    public static Camera Center(Rect2F area) => new(area);
+    public static Camera Centered(Rect2F area) => new(area);
 
     private Matrix _TransformMatrix;
     private Matrix _InvertedMatrix;
@@ -97,7 +98,7 @@ public class Camera
     public Vec2 WorldPosition(float x, float y) => ToWorldPosition(new Vec2(x, y));
     public Vec2 ToWorldPosition(Vec2 vec) => Vector2.Transform(vec, InvertedMatrix);
 
-    public static Camera Default => Camera.Center(new Rect2F(0, 0, All.Screen.WindowSize.X, All.Screen.WindowSize.Y));
+    public static Camera Default => Camera.Centered(new Rect2F(0, 0, All.Screen.WindowSize.X, All.Screen.WindowSize.Y));
 
     private int NbTimeScreenChangedWhenUpdated = -1;
 
@@ -182,7 +183,7 @@ public class Camera
 
     static Camera()
     {
-        Hud = Camera.Center(new Rect2F(0, 0, 960, 540));
+        Hud = Camera.Centered(new Rect2F(0, 0, 960, 540));
         Hud.Options.SamplerState = SamplerState.LinearWrap;
     }
 }
