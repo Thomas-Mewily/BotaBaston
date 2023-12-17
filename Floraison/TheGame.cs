@@ -9,6 +9,28 @@ using Useful;
 
 namespace Floraison;
 
+public struct ParticleLine 
+{
+    public Vec2 PosBegin, PosEnd;
+    public Color C;
+    public float Tickness;
+    public GTime TimeBegin, Duration;
+    /// <summary>
+    /// [0, 1]. 
+    /// </summary>
+    public float Delta => TimeBegin.Elapsed / Duration;
+
+    public ParticleLine(Vec2 posBegin, Vec2 posEnd, Color c, float tickness, GTime timeBegin, GTime duration)
+    {
+        PosBegin = posBegin;
+        PosEnd = posEnd;
+        C = c;
+        Tickness = tickness;
+        TimeBegin = timeBegin;
+        Duration = duration;
+    }
+}
+
 public class TheGame : TimeRelated
 {
     /// <summary>
@@ -16,6 +38,7 @@ public class TheGame : TimeRelated
     /// </summary>
     public List<Entite> _CreatedThisFrame = new();
     public List<Entite> _Entites = new();
+    public List<ParticleLine> ParticlesLines = new();
 
     public new const int FrameRate = 60;
     private GTime _Time;
@@ -117,6 +140,21 @@ public override void Update()
             obj.Draw();
         }
 
+        foreach(var v in ParticlesLines) 
+        {
+            var d = v.Delta;
+            if (d > 0) 
+            {
+                var c = v.C;
+                c.A = (byte)(255 * d);
+                SpriteBatch.DrawLine(v.PosBegin, v.PosEnd, v.C, v.Tickness * (1 - d), SpriteBatchExtension.LineEdgeMode.Circle);
+            }
+        }
+
+        ParticlesLines = ParticlesLines.Where(c => c.Delta < 1).ToList();
+        Camera.Pop();
+
+
         Camera.Push(Camera.Hud);
         for (int i = (int)Controller.PlayerControlEnum.One; i <= (int)Controller.PlayerControlEnum.Four; i++)
         {
@@ -138,6 +176,5 @@ public override void Update()
         }
         Camera.Pop();
 
-        Camera.Pop();
     }
 }
