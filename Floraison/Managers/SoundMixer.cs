@@ -74,7 +74,7 @@ public class SoundMixer
         pot_hit = new SoundPack("hit_pot");
         bramble_hit = new SoundPack("hit_bramble");
         victory = new SoundPack("victory");
-        spinning = new SoundPack("collectors_syringe_power_0");
+        spinning = new SoundPack("collectors_syringe_power");
     }
 
 }
