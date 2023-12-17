@@ -56,6 +56,8 @@ public class Plant : Entite
     public Vec2 DrawPos => Position + OffsetFlicker;
     public Color DrawColor => Input.IsConnected ? Teams.GetColor() : Color.White;
 
+    public int NbSeed = 3;
+
     public override void Load()
     {
         PowerUp = new PlantPowerUp(this);

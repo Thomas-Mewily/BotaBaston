@@ -12,16 +12,49 @@ public class Logic : Entite
 {
     GTime LastPowerUp;
 
-    private void SpawnRandomPowerUp() 
+    private static float[] probaPowerUp = {
+        0.7f,//Sun
+        0.3f //BrambleSeed
+    };
+
+    public enum PowerUpTypeEnum
     {
-        int rng = Rng.IntUniform(0, 100);
-        if(rng <= 25) 
+        Sun,
+        BrambleSeed,
+    }
+
+    public void SpawnPowerUp(PowerUpTypeEnum pu) 
+    {
+        Entite powerUp;
+        switch (pu)
         {
-            new Sun().SetRandomPositionForPowerUp().Spawn();
+            case PowerUpTypeEnum.Sun:            powerUp = new Sun(); break;
+            case PowerUpTypeEnum.BrambleSeed:    powerUp = new Spiral(); break;
+            default : powerUp = new Sun(); break;
         }
-        else 
+
+
+        for(int i = 0; i < 1000; i++) 
         {
-            new Petal().SetRandomPositionForPowerUp().Spawn();
+            powerUp.Position = Game.WorldHitbox.GetCoef(Rng.NextSingle(), Rng.NextSingle());
+            if (!powerUp.EntitiesControlledByActiveOrInactivePlayer().Inside(powerUp).Any()) { break; }
+        }
+        powerUp.Spawn();
+        Console.WriteLine("new Power up : " + pu.ToString());
+    }
+
+    public void SpawnPowerUp()
+    {
+        float choice = All.Rng.FloatUniform(0, 1);
+        float cumul = 0;
+        for (int i=0; i<probaPowerUp.Length; i++)
+        {
+            cumul += probaPowerUp[i];
+            if (choice < cumul)
+            {
+                SpawnPowerUp((PowerUpTypeEnum)i);
+                break;
+            }
         }
     }
 
@@ -32,7 +65,7 @@ public class Logic : Entite
             if (LastPowerUp.Elapsed.Seconds > 8 && AllEntities().OfType<Sun>().Count() < 3 && AllEntities().OfType<Petal>().Count() < 3) 
             {
                 LastPowerUp = Game.Time;
-                SpawnRandomPowerUp();
+                SpawnPowerUp();
             }
         }
     }
