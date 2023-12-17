@@ -70,6 +70,7 @@ public class MainGame : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         SpriteBatchExtension.Load();
         Assets.Load();
+        SoundMixer.Load();
         All.KbMInput = new KeyboardMouseInput();
         All.Screen = new Screen();
 
