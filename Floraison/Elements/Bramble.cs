@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Useful;
@@ -12,8 +11,8 @@ namespace Floraison;
 
 public class BrambleSeed : Entite
 {
-    private float spawnTime = 2;
-    public float Rota;
+    private GTime spawnTime = 2;
+    public Angle Rota;
 
     public BrambleSeed(Vec2 pos)
     {
@@ -23,8 +22,6 @@ public class BrambleSeed : Entite
         CollisionLayerAdd(CollisionLayerBramble);
         CollisionLayerAdd(CollisionLayerPlant);
         CollisionLayerAdd(CollisionLayerPot);
-
-
     }
 
     public override void Update()
@@ -40,8 +37,7 @@ public class BrambleSeed : Entite
     public override void Draw()
     {
         // SpriteBatch.DrawCircle(Position, Hitbox.Radius, Microsoft.Xna.Framework.Color.Aqua);
-        SpriteBatch.Draw(Assets.BrambleSeed, (Vector2)Position, null, Microsoft.Xna.Framework.Color.White, Rota, Assets.BrambleSeed.Size() * .5f, 3* Hitbox.Radius / Assets.Bramble.Size(), SpriteEffects.None, 0);
-
+        SpriteBatch.Draw(Assets.BrambleSeed, Position, null, Color.White, Rota, Assets.BrambleSeed.Size() * .5f, 3* Hitbox.Radius / Assets.Bramble.Size(), SpriteEffects.None, 0);
     }
 
 
@@ -50,25 +46,49 @@ public class BrambleSeed : Entite
 public class Bramble : Entite
 {
 
-    public Microsoft.Xna.Framework.Color Tint;
-    public float Rota;
+    public Color Tint;
+    public Angle Rota;
     public SpriteEffects Direction;
     public float Strenth = 0.6f;
     public const int HP_MAX = 4;
     public int hp = HP_MAX;
+    public float BumpSizeCoef = 0;
 
     public Bramble(Vec2 pos)
     {
         float RB = All.Rng.FloatUniform(0.5f, 1);
-        Tint = new Microsoft.Xna.Framework.Color(RB, All.Rng.FloatUniform(RB, 1), RB);
+        Tint = new Color(RB, All.Rng.FloatUniform(RB, 1), RB);
         Rota = Angle.FromDegree(All.Rng.FloatUniform(0, 360));
         Direction = (SpriteEffects)All.Rng.IntUniform(0, 2);
         Position = pos;
         Teams = TeamsEnum.Alone;
-        collisionType = CollisionTypeEnum.Fixed;
+        CollisionType = CollisionTypeEnum.Fixed;
+        CollisionLayerAdd(CollisionLayerPlant);
+        CollisionLayerAdd(CollisionLayerPot);
     }
+
+    
+    public override void EntityIsCollidingWithMe(Entite e)
+    {
+        BumpSizeCoef = Math.Max(2, BumpSizeCoef + 0.5f);
+
+        Vec2 normal = e.Position - Position;
+        normal.Normalize();
+        e.Speed = normal * (Strenth + e.Speed.Length);
+        if (e.IsOnCollisionLayer(CollisionLayerPot))
+        {
+            hp--;
+            if (hp <= 0)
+            {
+                DeleteMe();
+            }
+        }
+    }
+
     public override void Update()
     {
+        BumpSizeCoef *= 0.8f;
+        /*
         foreach(var e in AllOthersEntitiesAgainstMe().Inside(this)) 
         {
             Vec2 normal = e.Position - Position;
@@ -82,8 +102,7 @@ public class Bramble : Entite
                     DeleteMe();
                 }
             }
-        }
-
+        }*/
     }
 
     public override void Draw()
@@ -93,9 +112,10 @@ public class Bramble : Entite
         Camera.Push(c);
         // SpriteBatch.DrawCircle(Position, Hitbox.Radius, Color.Aqua);
 
-        float sizeModifier = ((float)hp/(float)HP_MAX) * 0.3f + 1.2f;
+        float sizeModifier = ((float)hp / (float)HP_MAX) * 0.3f + 1.2f;
 
-        SpriteBatch.Draw(Assets.Bramble, (Vector2)Position, null, Tint, Rota, Assets.Bramble.Size() * .5f, 2* sizeModifier * Hitbox.Radius / Assets.Bramble.Size(), Direction, 0);
+        SpriteBatch.Draw(Assets.Bramble, Position, null, Tint, Rota, Assets.Bramble.Size() * .5f, (1+BumpSizeCoef)* 2 * sizeModifier * Hitbox.Radius / Assets.Bramble.Size(), Direction, 0);
+
 
         Camera.Pop();
     }

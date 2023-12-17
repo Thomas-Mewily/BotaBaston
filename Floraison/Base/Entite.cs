@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Useful;
 using static Floraison.Controller;
 using static Floraison.Entite;
 
@@ -38,6 +39,8 @@ public class Entite : GameRelated
         Neutral,
     }
 
+    public virtual void EntityIsCollidingWithMe(Entite e) { }
+
     public bool SameTeams(Entite e) => ReferenceEquals(this, e) ? true : SameTeams(e.Teams);
     public bool SameTeams(TeamsEnum teams)
     {
@@ -67,9 +70,9 @@ public class Entite : GameRelated
 
 
 
-    public const int CollisionLayerUnknow = 0b1;
-    public const int CollisionLayerPot    = 0b10;
-    public const int CollisionLayerPlant  = 0b100;
+    public const int CollisionLayerUnknow   = 0b1;
+    public const int CollisionLayerPot      = 0b10;
+    public const int CollisionLayerPlant    = 0b100;
     public const int CollisionLayerBramble  = 0b1000;
     public int CollisionLayer = 0;
 
@@ -126,10 +129,10 @@ public class Entite : GameRelated
 
     public CollisionEnableEnum CollisionEnable = CollisionEnableEnum.Enable;
 
-    public void MoveRelative(Vec2 add) => MoveRelative(add.X, add.Y);
-    public void MoveRelative(Vec2 add, CollisionEnableEnum type) => MoveRelative(add.X, add.Y, type);
-    public void MoveRelative(float x, float y) => MoveRelative(x, y, CollisionEnable);
-    public void MoveRelative(float x, float y, CollisionEnableEnum type) 
+    public void MoveRelative(float x, float y) => MoveRelative(new Vec2(x, y));
+    public void MoveRelative(float x, float y, CollisionEnableEnum type) => MoveRelative(new Vec2(x, y), type);
+    public void MoveRelative(Vec2 add) => MoveRelative(add, CollisionEnable);
+    public void MoveRelative(Vec2 add, CollisionEnableEnum type) 
     {
         // PositionRelativeNoCollision += new Vec2(x, y);
         // foreach (var v in AllOtherEntitiesColliding())
@@ -151,18 +154,46 @@ public class Entite : GameRelated
         //     }
         // }
 
-        PositionRelativeNoCollision += new Vec2(x, y);
+        PositionRelativeNoCollision += add;
         foreach (var v in AllOtherEntitiesColliding())
         {
-            var delta = new Vec2(Position, v.Position).WithLength(ScaledRadius + v.ScaledRadius+1/64f);
-            v.PositionNoCollision = Position + delta;
-            v.Speed += delta.WithLength((Speed).Length);
-            //Speed   -= delta.WithLength((v.Speed).Length);
-            Speed   -= delta.WithLength(v.Speed.Length)*0.5f;
+            var delta_vec = new Vec2(Position, v.Position);
+            var delta = delta_vec.WithLength(ScaledRadius + v.ScaledRadius+1/64f);
+
+            if (v.CollisionType == CollisionTypeEnum.Free) 
+            {
+                v.PositionNoCollision = Position + delta;
+                v.Speed += delta.WithLength((Speed).Length);
+            }
+            else if (v.CollisionType == CollisionTypeEnum.Fixed && CollisionType == CollisionTypeEnum.Free)
+            {
+                // Move Myself instead of others
+                PositionNoCollision = v.Position - delta;
+            }
+
+            if(CollisionType == CollisionTypeEnum.Free) 
+            {
+                //Speed   -= delta.WithLength((v.Speed).Length);
+                Speed -= delta.WithLength(v.Speed.Length) * 0.5f;
+            }
+
+
+
+            v.EntityIsCollidingWithMe(this);
+
+            // Spawn des particles
+            var semi_delta = delta;//delta_vec.WithLength(ScaledRadius);
+            //var add_reversed = add.SwapAxis();
+            var add_reversed = add;
+            for (int i = Rng.IntUniform(0, 2); i >= 0; i--) 
+            {
+                var rng_vec = new Vec2(Rng.FloatUniform(-1, 1), Rng.FloatUniform(-1, 1)) * 0.125f + add_reversed.WithLength(Rng.FloatUniform(-1,1)* ScaledRadius);
+                Game.ParticlesLines.Push(new ParticleLine(rng_vec+Position + semi_delta + add_reversed, rng_vec+Position + semi_delta - add_reversed, this.Teams.GetColor(), 0.75f, Game.Time, GTime.Second(0.5f)));
+            }
         }
     }
 
-    public CollisionTypeEnum collisionType = CollisionTypeEnum.Free;
+    public CollisionTypeEnum CollisionType = CollisionTypeEnum.Free;
 
     public GTime SpawnTime;
 

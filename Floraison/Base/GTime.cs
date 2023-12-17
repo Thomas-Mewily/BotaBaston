@@ -12,11 +12,11 @@ public struct GTime
     public float Seconds { get => Frames / TheGame.FrameRate; set => Frames = (int)(value * TheGame.FrameRate); }
     public float Ms { get => Seconds * 1000; set => Seconds = value / 1000; }
 
-    public static GTime OneSecond => new(60);
+    public static GTime OneSecond => new(1f);
 
     public static GTime Hz60(int duration) => new(duration * TheGame.FrameRate / 60);
-    public static GTime Second(float s) => new((int)(s * OneSecond.Seconds));
-    public static GTime MilliSecond(float s) => new((int)((s/1000) * OneSecond.Seconds));
+    public static GTime Second(float s) => new(s);
+    public static GTime MilliSecond(float s) => new(s/1000);
 
     private GTime(int frames) { Frames = frames; }
     public GTime(float seconds) { Frames = (int)(seconds * TheGame.FrameRate); }
@@ -35,6 +35,7 @@ public struct GTime
 
     public static GTime operator -(GTime a, GTime b) => new GTime(a.Frames - b.Frames);
     public static GTime operator +(GTime a, GTime b) => new GTime(a.Frames + b.Frames);
+    public static float operator /(GTime a, GTime b) => a.Frames / (float)b.Frames;
 
     public override bool Equals(object obj) => obj != null && obj is GTime t && t == this;
     public override int GetHashCode() => Seconds.GetHashCode();
