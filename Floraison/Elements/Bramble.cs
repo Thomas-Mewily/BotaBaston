@@ -86,6 +86,7 @@ public class Bramble : Entite
                 DeleteMe();
             }
         }
+        SoundMixer.bramble_hit.Play();
     }
 
     public override void Update()
