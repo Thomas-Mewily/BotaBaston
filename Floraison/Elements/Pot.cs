@@ -20,6 +20,10 @@ public class Pot : Entite
     public override void Update()
     {
         Position += Input.LeftJoystick.UnitPerSecond * 3;
+        if (Input.LeftTrigger.JustPressed) 
+        {
+            
+        }
     }
 
     public override void Draw()
