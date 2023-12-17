@@ -14,14 +14,17 @@ public class BrambleSeed : Entite
     private GTime spawnTime = 2;
     public Angle Rota;
 
-    public BrambleSeed(Vec2 pos)
+    public BrambleSeed()
     {
-        Position = pos;
-        // Scale = 1f;
         Rota = Angle.FromDegree(All.Rng.FloatUniform(0, 360));
         CollisionLayerAdd(CollisionLayerBramble);
         CollisionLayerAdd(CollisionLayerPlant);
         CollisionLayerAdd(CollisionLayerPot);
+        // Scale = 1f;
+    }
+    public BrambleSeed(Vec2 pos) : this()
+    {
+        Position = pos;
     }
 
     public override void Update()

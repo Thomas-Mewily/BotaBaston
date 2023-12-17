@@ -50,11 +50,26 @@ public class PlantBehaviorMartin : PlantBehavior
         }
     }
 
+    public void RightClickAction(Vec2 clickLocation)
+    {
+        GameLoader.logicRef.SpawnPowerUp();
+    }
+
     public override void Update()
     {
         
         SpawBrambleOnClick();
         Vec2 newPosR = P.PositionRelative;
+
+        if (All.KbMInput.MouseRightReleased && P.Input.PlayerControl == Controller.PlayerControlEnum.One)
+        {
+            Vec2 temp = Camera.Peek().ToWorldPosition((Vec2)All.KbMInput.Mouse.Position.ToVector2());
+            if (Game.WorldHitbox.IsCollidingWith(temp))
+            {
+
+                RightClickAction(temp);
+            }
+        }
 
 
         if (P.Input.RightTrigger.JustReleased)
@@ -96,6 +111,13 @@ public class PlantBehaviorMartin : PlantBehavior
         if (P.Input.RightJoystick.IsNeutral || newPosR.Length <= ControlDist * StemMaxLength) {Available = true;}
 
         P.PositionRelative = newPosR;
+
+        if (P.Input.LeftTrigger.JustPressed && P.NbSeed > 0)
+        {
+            P.NbSeed--;
+            BrambleSeed b = new BrambleSeed(P.Position);
+            b.Spawn();
+        }
 
     }
 }

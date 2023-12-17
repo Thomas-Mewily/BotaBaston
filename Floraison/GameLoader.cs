@@ -14,6 +14,8 @@ public class GameLoader : Shortcut
 
     }
 
+    public static Logic logicRef;
+
     public void Load() 
     {
         
@@ -52,6 +54,7 @@ public class GameLoader : Shortcut
 
         Logic lo = new();
         lo.Spawn();
+        logicRef = lo;
 
 
         Song bgm = All.Content.Load<Song>("Run!");

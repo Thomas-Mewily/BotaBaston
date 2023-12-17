@@ -23,6 +23,8 @@ public class Plant : Entite
 
     private Vec2 offsetFlicker = Vec2.Zero;
 
+    public int NbSeed = 3;
+
     public override void Load()
     {
         // Just testing...
