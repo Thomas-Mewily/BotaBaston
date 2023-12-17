@@ -14,6 +14,8 @@ public class BrambleSeed : Entite
     private GTime spawnTime = 2;
     public Angle Rota;
 
+    public Entite SpawnedBy;
+
     public BrambleSeed()
     {
         Rota = Angle.FromDegree(All.Rng.FloatUniform(0, 360));
@@ -27,10 +29,18 @@ public class BrambleSeed : Entite
         Position = pos;
     }
 
+    
+    public override bool AcceptCollision(Entite e)
+    {
+        if(SpawnedBy == null) { return true; }
+        return SpawnedBy.BaseEntite != e.BaseEntite;
+    }
+
     public override void Update()
     {
         if (SpawnTime.Elapsed.Seconds > spawnTime)
         {
+            // All.Sound.play
             DeleteMe();
             Bramble b = new Bramble(Position);
             b.Spawn();
@@ -65,6 +75,7 @@ public class Bramble : Entite
         Direction = (SpriteEffects)All.Rng.IntUniform(0, 2);
         Position = pos;
         Teams = TeamsEnum.Alone;
+        Scale = 1.35f;
         CollisionType = CollisionTypeEnum.Fixed;
         CollisionLayerAdd(CollisionLayerPlant);
         CollisionLayerAdd(CollisionLayerPot);

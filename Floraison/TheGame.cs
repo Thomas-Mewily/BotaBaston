@@ -179,7 +179,7 @@ public class TheGame : TimeRelated
 
                     if (obj.TouchSomeLight == false)
                     {
-                        obj.Score *= 0.96f;
+                        obj.Score *= 0.975f;
                     }
                     else
                     {

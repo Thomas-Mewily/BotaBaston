@@ -60,7 +60,7 @@ public class PowerUpPetales : PlantPowerUp
 
     public override bool AcceptCollision(Entite e)
     {
-        return e.Teams != this.Teams;
+        return e.Teams != this.Teams && e.Teams != TeamsEnum.Neutral;
     }
 
     public override void EntityIsCollidingWithMe(Entite e)

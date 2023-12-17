@@ -20,9 +20,10 @@ public class Pot : Entite
     public override void Update()
     {
         Position += Input.LeftJoystick.UnitPerSecond * 3;
-        if (Input.LeftTrigger.JustPressed) 
+        if (PlantInside != null) 
         {
-            
+            float targetScale = PlantInside.IsFlickering ? 2.25f : 1f;
+            Scale = (Scale * 63 + targetScale * 1) / 64f;
         }
     }
 

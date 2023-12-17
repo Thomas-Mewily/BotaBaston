@@ -13,7 +13,7 @@ public class PlantBehaviorMartin : PlantBehavior
 
     public override void Grow()
     {
-        StemMaxLength += 0.5f;
+        StemMaxLength += 1f;
     }
 
     //taille max de la tige (hors étirage)
@@ -116,9 +116,9 @@ public class PlantBehaviorMartin : PlantBehavior
         {
             P.NbSeed--;
             BrambleSeed b = new BrambleSeed(P.Position);
+            b.SpawnedBy = P;
             b.Spawn();
         }
-
     }
 }
 

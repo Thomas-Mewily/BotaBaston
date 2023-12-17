@@ -13,14 +13,16 @@ public class Logic : Entite
     GTime LastPowerUp;
 
     private static float[] probaPowerUp = {
-        0.7f,//Sun
-        0.3f //BrambleSeed
+        8, //Sun
+        10, //BrambleSeed
+        10, // Petals
     };
 
     public enum PowerUpTypeEnum
     {
         Sun,
         BrambleSeed,
+        Petals,
     }
 
     public void SpawnPowerUp(PowerUpTypeEnum pu) 
@@ -30,6 +32,7 @@ public class Logic : Entite
         {
             case PowerUpTypeEnum.Sun:            powerUp = new Sun(); break;
             case PowerUpTypeEnum.BrambleSeed:    powerUp = new Spiral(); break;
+            case PowerUpTypeEnum.Petals     :    powerUp = new Petal(); break;
             default : powerUp = new Sun(); break;
         }
 
@@ -45,12 +48,12 @@ public class Logic : Entite
 
     public void SpawnPowerUp()
     {
-        float choice = All.Rng.FloatUniform(0, 1);
+        float choice = All.Rng.FloatUniform(0, probaPowerUp.Sum());
         float cumul = 0;
-        for (int i=0; i<probaPowerUp.Length; i++)
+        for (int i=0; i < probaPowerUp.Length; i++)
         {
             cumul += probaPowerUp[i];
-            if (choice < cumul)
+            if (choice <= cumul)
             {
                 SpawnPowerUp((PowerUpTypeEnum)i);
                 break;

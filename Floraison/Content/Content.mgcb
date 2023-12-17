@@ -49,6 +49,12 @@
 /processorParam:TextureFormat=Color
 /build:circle.png
 
+#begin collectors_syringe_power_0.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:collectors_syringe_power_0.mp3
+
 #begin FontJosefinSans.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -58,18 +64,6 @@
 
 #begin JosefinSans-Regular.ttf
 /copy:JosefinSans-Regular.ttf
-
-#begin petal.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:petal.png
 
 #begin petal.png
 /importer:TextureImporter
@@ -110,6 +104,18 @@
 /processorParam:TextureFormat=Color
 /build:pot.png
 
+#begin power_up_petal.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:power_up_petal.png
+
 #begin Run!.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
@@ -117,7 +123,6 @@
 /build:Run!.mp3
 
 #begin spiral_0.png
-#begin power_up_petal.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -152,7 +157,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:spiral_2.png
-/build:power_up_petal.png
 
 #begin sun_0.png
 /importer:TextureImporter

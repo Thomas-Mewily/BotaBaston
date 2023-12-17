@@ -15,7 +15,7 @@ public class All
     public static GraphicsDevice Graphics => GraphicsDeviceManager.GraphicsDevice;
     public static ContentManager Content => MainGame._Content;
 
-    public static Color BackgroundColor = Color.Black;
+    public static Color BackgroundColor = new Color(0x557057);
 
     public static Performance Performance;
     public static TheGame Game;

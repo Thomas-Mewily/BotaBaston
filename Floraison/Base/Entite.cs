@@ -184,7 +184,7 @@ public class Entite : GameRelated
             if (v.CollisionType == CollisionTypeEnum.Free) 
             {
                 v.PositionNoCollision = Position + delta;
-                v.Speed += delta.WithLength((Speed).Length);
+                v.Speed += delta.WithLength((Speed).Length*1.25f);
             }
             else if (v.CollisionType == CollisionTypeEnum.Fixed && CollisionType == CollisionTypeEnum.Free)
             {

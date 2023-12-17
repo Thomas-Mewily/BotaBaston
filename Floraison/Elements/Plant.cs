@@ -93,9 +93,12 @@ public class Plant : Entite
         PowerUp.Draw();
     }
 
+    public bool IsFlickering = false;
+
     public void Flicker(float v)
     {
         OffsetFlicker.X = All.Rng.FloatUniform(-v, v);
         OffsetFlicker.Y = All.Rng.FloatUniform(-v, v);
+        IsFlickering = v != 0;
     }
 }
