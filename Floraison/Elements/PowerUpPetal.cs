@@ -25,24 +25,52 @@ public class PowerUpPetales : PlantPowerUp
     public GTime Duration;
     public GTime CoolDown;
 
+    public override void Load()
+    {
+        CollisionEnable = CollisionEnableEnum.Disable;
+        CollisionLayer = 0;
+        CollisionLayerAdd(CollisionLayerPlant);
+        CollisionLayerAdd(CollisionLayerPot);
+    }
+
     public override void Update()
     {
         Duration = GTime.Second(1.5f);
-        CoolDown = GTime.Second(1f);
+        CoolDown = GTime.Second(10f);
 
+        Position = P.Position;
+
+        Scale = HRadius;
 
         if (Available) 
         {
             if (P.Input.LeftTrigger.JustPressed || P.Input.LeftTrigger.IsPressed) 
             {
                 LastTimeUsed = P.Game.Time;
+                CollisionEnable = CollisionEnableEnum.Enable;
             }
+        }
+        if (IsCoolDown) 
+        {
+            CollisionEnable = CollisionEnableEnum.Disable;
         }
 
         base.Update();
     }
 
-    public float Radius => 2 * P.ScaledRadius * 2f;
+    public override bool AcceptCollision(Entite e)
+    {
+        return e.Teams != this.Teams;
+    }
+
+    public override void EntityIsCollidingWithMe(Entite e)
+    {
+        if (!AcceptCollision(e)) { return;  }
+        e.Speed += new Vec2(Position, e.Position).WithLength(1/64f);
+    }
+
+
+    public float HRadius => 2 * P.ScaledRadius  + (IsUsed ? P.ScaledRadius : 0);
 
     public override void Draw()
     {
@@ -68,9 +96,12 @@ public class PowerUpPetales : PlantPowerUp
                 //a += Angle.AngleFromOne(UsedCoef).Cos * 90;
                 a += Angle.FromDegree(P.SpawnTime.Elapsed.Seconds * 360*2.5f);
             }
-            SpriteBatch.Draw(Assets.Petal, P.DrawPos, null, c, a, Assets.Petal.Size() * 0.5f, Radius / Assets.Petal.Size(), SpriteEffects.None, 0);
+            SpriteBatch.Draw(Assets.Petal, P.DrawPos, null, c, a, Assets.Petal.Size() * 0.5f, HRadius*2 / Assets.Petal.Size(), SpriteEffects.None, 0);
         }
         base.Draw();
+
+        //SpriteBatch.DrawCircle(Position, ScaledRadius, Teams.GetColor());
+        //SpriteBatch.DrawCircle(Position, 20, Teams.GetColor());
     }
 }
 

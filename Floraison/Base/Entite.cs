@@ -42,6 +42,7 @@ public class Entite : GameRelated
     }
 
     public virtual void EntityIsCollidingWithMe(Entite e) { }
+    public virtual bool AcceptCollision(Entite e) { return true; }
 
     public bool SameTeams(Entite e) => ReferenceEquals(this, e) ? true : SameTeams(e.Teams);
     public bool SameTeams(TeamsEnum teams)
@@ -136,6 +137,12 @@ public class Entite : GameRelated
     public void MoveRelative(Vec2 add) => MoveRelative(add, CollisionEnable);
     public void MoveRelative(Vec2 add, CollisionEnableEnum type) 
     {
+        if (type == CollisionEnableEnum.Disable) 
+        {
+            PositionRelativeNoCollision += add;
+            return;
+        }
+
         // PositionRelativeNoCollision += new Vec2(x, y);
         // foreach (var v in AllOtherEntitiesColliding())
         // {
@@ -156,7 +163,7 @@ public class Entite : GameRelated
         //     }
         // }
 
-        if(add.Length > 1.00001f) 
+        if (add.Length > 1.00001f) 
         {
             //while(Math.Floor(add.Length) > 1) 
             for(int i = (int)Math.Floor(add.Length); i >= 0; i--)
@@ -169,6 +176,8 @@ public class Entite : GameRelated
         PositionRelativeNoCollision += add;
         foreach (var v in AllOtherEntitiesColliding())
         {
+            if(!AcceptCollision(v) || !v.AcceptCollision(this)) { continue; }
+
             var delta_vec = new Vec2(Position, v.Position);
             var delta = delta_vec.WithLength(ScaledRadius + v.ScaledRadius+1/64f);
 

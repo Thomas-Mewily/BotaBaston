@@ -10,15 +10,22 @@ namespace Floraison;
 
 public abstract class PlantBehavior : TimeRelated
 {
-    public PlantBehavior(Plant p) { P = p; }
+    public PlantBehavior(Plant p) 
+    { 
+        P = p; 
+    }
     public Plant P;
 
     public virtual void Grow() { }
 }
 
-public class PlantPowerUp : TimeRelated
+public class PlantPowerUp : Entite
 {
-    public PlantPowerUp(Plant p) { P = p; }
+    public PlantPowerUp(Plant p) 
+    { 
+        P = p;
+        CollisionEnable = CollisionEnableEnum.Disable;
+    }
     public Plant P;
 
     public override void Draw()
@@ -31,7 +38,19 @@ public class Plant : Entite
 {
     public Pot PlantedIn => OwnedBy == null ? null : (Pot)OwnedBy;
     public PlantBehavior Behavior;
-    public PlantPowerUp  PowerUp;
+
+    private PlantPowerUp _PowerUp;
+    public PlantPowerUp PowerUp 
+    {
+        get => _PowerUp;
+        set 
+        {
+            _PowerUp?.DeleteMe();
+            _PowerUp = value;
+            _PowerUp.OwnedBy = this;
+            _PowerUp.Spawn();
+        }
+    }
 
     public Vec2 OffsetFlicker = Vec2.Zero;
     public Vec2 DrawPos => Position + OffsetFlicker;
