@@ -169,6 +169,7 @@ public class TheGame : TimeRelated
                     {
                         Winner = obj;
                         TimeWinning = Time;
+                            SoundMixer.victory.Play();
                         GameState = GameStateEnum.Over;
                     }
                 }

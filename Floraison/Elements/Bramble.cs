@@ -40,7 +40,7 @@ public class BrambleSeed : Entite
     {
         if (SpawnTime.Elapsed.Seconds > spawnTime)
         {
-            // All.Sound.play
+            SoundMixer.spinning.Play();
             DeleteMe();
             Bramble b = new Bramble(Position);
             b.Spawn();

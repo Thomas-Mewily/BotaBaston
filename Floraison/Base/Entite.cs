@@ -163,6 +163,8 @@ public class Entite : GameRelated
         //     }
         // }
 
+
+
         if (add.Length > 1.00001f) 
         {
             //while(Math.Floor(add.Length) > 1) 
@@ -176,7 +178,14 @@ public class Entite : GameRelated
         PositionRelativeNoCollision += add;
         foreach (var v in AllOtherEntitiesColliding())
         {
-            if(!AcceptCollision(v) || !v.AcceptCollision(this)) { continue; }
+
+            if (!AcceptCollision(v) || !v.AcceptCollision(this)) { continue; }
+
+            if (this is Pot && v is Pot)
+            {
+                SoundMixer.pot_hit.Play();
+
+            }
 
             var delta_vec = new Vec2(Position, v.Position);
             var delta = delta_vec.WithLength(ScaledRadius + v.ScaledRadius+1/64f);

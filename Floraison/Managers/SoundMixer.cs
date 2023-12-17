@@ -18,10 +18,18 @@ public class SoundPack{
     private int lastPlayed = 0;
     public void Play()
     {
-        SoundsInst[lastPlayed].Stop();
-        int r = All.Rng.IntUniform(0, SoundsInst.Count-1);
-        SoundsInst[r].Play();
-        lastPlayed = r;
+        try 
+        {
+            SoundsInst[lastPlayed].Stop();
+            int r = All.Rng.IntUniform(0, SoundsInst.Count - 1);
+            SoundsInst[r].Play();
+            lastPlayed = r;
+        }
+        catch 
+        {
+        
+        }
+
     }
 
     public SoundPack(string name)
@@ -56,6 +64,7 @@ public class SoundMixer
     private SoundMixer() {}
 
     
+    public static SoundPack spinning;
     public static SoundPack pot_hit;
     public static SoundPack bramble_hit;
     public static SoundPack victory;
@@ -65,6 +74,7 @@ public class SoundMixer
         pot_hit = new SoundPack("hit_pot");
         bramble_hit = new SoundPack("hit_bramble");
         victory = new SoundPack("victory");
+        spinning = new SoundPack("collectors_syringe_power_0");
     }
 
 }
