@@ -15,6 +15,7 @@ public class Assets
     public static Tex2 Plant;
     public static Tex2 Pot;
     public static Tex2 Bramble;
+    public static Tex2 BrambleSeed;
 
     public static List<Tex2> Suns;
 
@@ -49,5 +50,6 @@ public class Assets
         Pot   = LoadTexture("pot");
         Suns = LoadListTexture("sun");
         Bramble = LoadTexture("bramble");
+        BrambleSeed = LoadTexture("bramble_seed");
     }
 }

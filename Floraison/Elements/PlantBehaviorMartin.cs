@@ -44,14 +44,8 @@ public class PlantBehaviorMartin : PlantBehavior
             Vec2 temp = Camera.Peek().ToWorldPosition((Vec2)All.KbMInput.Mouse.Position.ToVector2());
             if (Game.WorldHitbox.IsCollidingWith(temp))
             {
-                Bramble b = new Bramble(){
-                    Position = temp,
-                    CollisionLayer = Entite.CollisionLayerUnknow
-                };
-                b.Teams = Entite.TeamsEnum.Alone;
-                b.collisionType = Entite.CollisionTypeEnum.Fixed;
+                BrambleSeed b = new BrambleSeed(temp);
                 b.Spawn();
-                Console.WriteLine(temp.ToString());
             }
         }
     }
@@ -105,3 +99,9 @@ public class PlantBehaviorMartin : PlantBehavior
 
     }
 }
+
+//Idées musiques 
+/*
+https://www.youtube.com/watch?v=-opUgucsoHs&list=PL0A12ED38862DB0F5&index=15
+
+*/

@@ -70,6 +70,7 @@ public class Entite : GameRelated
     public const int CollisionLayerUnknow = 0b1;
     public const int CollisionLayerPot    = 0b10;
     public const int CollisionLayerPlant  = 0b100;
+    public const int CollisionLayerBramble  = 0b1000;
     public int CollisionLayer = 0;
 
     public void CollisionLayerAdd(int layer) { CollisionLayer |= layer; } 
@@ -130,23 +131,34 @@ public class Entite : GameRelated
     public void MoveRelative(float x, float y) => MoveRelative(x, y, CollisionEnable);
     public void MoveRelative(float x, float y, CollisionEnableEnum type) 
     {
+        // PositionRelativeNoCollision += new Vec2(x, y);
+        // foreach (var v in AllOtherEntitiesColliding())
+        // {
+        //     var delta = new Vec2(Position, v.Position).WithLength(ScaledRadius + v.ScaledRadius+1/64f);
+        //     if (v.collisionType == CollisionTypeEnum.Free)
+        //     {
+        //         v.Speed += delta.WithLength((Speed).Length);
+        //         Console.WriteLine(delta);
+        //         v.PositionNoCollision = Position + delta;
+        //     }
+        //     else if (v.collisionType == CollisionTypeEnum.Fixed)
+        //     {
+        //         PositionNoCollision = v.Position - delta;
+        //     }
+        //     if (collisionType == CollisionTypeEnum.Free)
+        //     {
+        //         Speed -= delta.WithLength(v.Speed.Length)*0.5f;
+        //     }
+        // }
+
         PositionRelativeNoCollision += new Vec2(x, y);
         foreach (var v in AllOtherEntitiesColliding())
         {
             var delta = new Vec2(Position, v.Position).WithLength(ScaledRadius + v.ScaledRadius+1/64f);
-            if (v.collisionType == CollisionTypeEnum.Free)
-            {
-                v.Speed += delta.WithLength((Speed).Length);
-                v.PositionNoCollision = Position + delta;
-            }
-            else if (v.collisionType == CollisionTypeEnum.Fixed)
-            {
-                PositionNoCollision = v.Position - delta;
-            }
-            if (collisionType == CollisionTypeEnum.Free)
-            {
-                Speed -= delta.WithLength(v.Speed.Length)*0.5f;
-            }
+            v.PositionNoCollision = Position + delta;
+            v.Speed += delta.WithLength((Speed).Length);
+            //Speed   -= delta.WithLength((v.Speed).Length);
+            Speed   -= delta.WithLength(v.Speed.Length)*0.5f;
         }
     }
 
