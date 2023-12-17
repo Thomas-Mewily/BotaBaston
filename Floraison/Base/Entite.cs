@@ -183,11 +183,12 @@ public class Entite : GameRelated
 
             // Spawn des particles
             var semi_delta = delta;//delta_vec.WithLength(ScaledRadius);
-            var add_reversed = add.SwapAxis();
-            for(int i = Rng.IntUniform(0, 2); i >= 0; i--) 
+            //var add_reversed = add.SwapAxis();
+            var add_reversed = add;
+            for (int i = Rng.IntUniform(0, 2); i >= 0; i--) 
             {
-                var rng_vec = new Vec2(Rng.FloatUniform(-1, 1), Rng.FloatUniform(-1, 1)) * 0.125f;
-                Game.ParticlesLines.Push(new ParticleLine(rng_vec+Position + semi_delta + add_reversed, rng_vec+Position - semi_delta + add_reversed, this.Teams.GetColor(), 0.5f, Game.Time, GTime.Second(0.5f)));
+                var rng_vec = new Vec2(Rng.FloatUniform(-1, 1), Rng.FloatUniform(-1, 1)) * 0.125f + add_reversed.WithLength(Rng.FloatUniform(-1,1)* ScaledRadius);
+                Game.ParticlesLines.Push(new ParticleLine(rng_vec+Position + semi_delta + add_reversed, rng_vec+Position + semi_delta - add_reversed, this.Teams.GetColor(), 0.75f, Game.Time, GTime.Second(0.5f)));
             }
         }
     }

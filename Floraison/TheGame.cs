@@ -143,15 +143,15 @@ public override void Update()
         foreach(var v in ParticlesLines) 
         {
             var d = v.Delta;
-            if (d > 0) 
+            if (d < 1) 
             {
                 var c = v.C;
-                c.A = (byte)(255 * d);
+                //c.A = (byte)(255 * d);
                 SpriteBatch.DrawLine(v.PosBegin, v.PosEnd, v.C, v.Tickness * (1 - d), SpriteBatchExtension.LineEdgeMode.Circle);
             }
         }
 
-        ParticlesLines = ParticlesLines.Where(c => c.Delta < 1).ToList();
+        ParticlesLines = ParticlesLines.Where(c => c.Delta <= 1).ToList();
         Camera.Pop();
 
 
