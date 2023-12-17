@@ -86,6 +86,12 @@
 /processorParam:TextureFormat=Color
 /build:pot.png
 
+#begin Run!.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Run!.mp3
+
 #begin sun_0.png
 /importer:TextureImporter
 /processor:TextureProcessor

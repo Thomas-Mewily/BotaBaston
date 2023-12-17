@@ -1,7 +1,9 @@
 ﻿using Geometry;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace Floraison;
 
@@ -50,5 +52,11 @@ public class GameLoader : Shortcut
 
         Logic lo = new();
         lo.Spawn();
+
+
+        Song bgm = All.Content.Load<Song>("Run!");
+        MediaPlayer.Play(bgm);
+        MediaPlayer.IsRepeating  = true;
+        
     }
 }
